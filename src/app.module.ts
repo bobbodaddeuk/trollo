@@ -8,12 +8,7 @@ import { CommentModule } from './comment/comment.module';
 import { MemberModule } from './member/member.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Board } from './board/entities/board.entity';
-import { Card } from './card/entities/card.entity';
-import { User } from './user/entities/user.entity';
-import { Comment } from './comment/entities/comment.entity';
 import { ListModule } from './list/list.module';
-import { List } from './list/entities/list.entity';
 import { configModuleValidationSchema } from './configs/env-validation.config';
 import { TypeOrmModuleOptions } from './configs/database.config';
 
