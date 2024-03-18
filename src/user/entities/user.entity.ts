@@ -17,6 +17,7 @@ import {
 import { UserRole } from '../types/user-role.type';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
+import { List } from 'src/list/entities/list.entity';
 
 @Entity({
   name: 'user',
@@ -43,7 +44,7 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Board, (Board) => board.user)
+  @OneToMany(() => Board, (Board) => Board.user)
   Board: Board[];
 
   @OneToMany(() => List, (List) => List.user)

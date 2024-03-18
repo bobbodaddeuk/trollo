@@ -18,9 +18,9 @@ export class Comment {
   @Column({ type: 'varchar', select: true, nullable: true })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.comment, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.Comment, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Card, (card) => card.comment, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Card, (card) => card.comments, { onDelete: 'CASCADE' })
   card: Card;
 }

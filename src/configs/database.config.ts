@@ -5,7 +5,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 export const TypeOrmModuleOptions: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
   inject: [ConfigService],
-  useFactory: (configService: ConfigService): {} => ({
+  useFactory: (configService: ConfigService) => ({
     namingStrategy: new SnakeNamingStrategy(),
     type: 'mysql',
     host: configService.get<string>('DB_HOST'),
