@@ -17,6 +17,7 @@ import {
 import { UserRole } from '../types/user-role.type';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
+import { List } from 'src/list/entities/list.entity';
 
 @Entity({
   name: 'user',
