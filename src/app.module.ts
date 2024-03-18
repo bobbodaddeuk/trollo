@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ListModule } from './list/list.module';
 import { configModuleValidationSchema } from './configs/env-validation.config';
-import { TypeOrmModuleOptions } from './configs/database.config';
+import { typeOrmModuleOptions } from './configs/database.config';
 
 @Module({
   imports: [
@@ -17,12 +17,13 @@ import { TypeOrmModuleOptions } from './configs/database.config';
       isGlobal: true,
       validationSchema: configModuleValidationSchema,
     }),
-    TypeOrmModule.forRootAsync(TypeOrmModuleOptions),
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UserModule,
     CardModule,
     BoardModule,
     ListModule,
     CommentModule,
+    MemberModule,
   ],
   controllers: [AppController],
 })
