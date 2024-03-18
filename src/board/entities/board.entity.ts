@@ -1,4 +1,13 @@
-import { Column, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Member } from 'src/member/entities/member.entity';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Index('boardId', ['boardId'], { unique: true })
 export class Board {
   @PrimaryGeneratedColumn()
@@ -11,7 +20,7 @@ export class Board {
   memberId: number;
 
   @Column({ type: 'int', nullable: true })
-  columnId: number;
+  listId: number;
 
   @Column({ type: 'varchar', nullable: false })
   boardName: string;

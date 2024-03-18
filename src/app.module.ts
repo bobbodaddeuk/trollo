@@ -9,7 +9,14 @@ import { CommentModule } from './comment/comment.module';
 import { MemberModule } from './member/member.module';
 
 @Module({
-  imports: [UserModule, CardModule, BoardModule, ColumnModule, CommentModule, MemberModule],
+  imports: [
+    UserModule,
+    CardModule,
+    BoardModule,
+    ColumnModule,
+    CommentModule,
+    MemberModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
