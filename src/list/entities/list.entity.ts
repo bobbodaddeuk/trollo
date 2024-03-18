@@ -1,5 +1,6 @@
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -32,4 +33,7 @@ export class List {
 
   @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
   board: Board;
+
+  @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
+  user: User;
 }
