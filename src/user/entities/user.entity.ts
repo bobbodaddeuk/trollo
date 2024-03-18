@@ -1,11 +1,3 @@
-// import {
-//   IsEmail,
-//   IsEnum,
-//   IsNotEmpty,
-//   IsNumber,
-//   IsString,
-//   IsStrongPassword,
-// } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -18,6 +10,8 @@ import { UserRole } from '../types/user-role.type';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
 import { List } from 'src/list/entities/list.entity';
+import { Member } from 'src/member/entities/member.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity({
   name: 'user',
@@ -44,15 +38,18 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Board, (Board) => board.user)
+  @OneToMany(() => Board, (board) => board.user)
   Board: Board[];
 
   @OneToMany(() => List, (List) => List.user)
-  List: List[];
+  list: List[];
 
-  @OneToMany(() => Card, (Card) => Card.user)
-  Card: Card[];
+  @OneToMany(() => Card, (card) => card.user)
+  card: Card[];
 
-  @OneToMany(() => Comment, (Comment) => Comment.user)
-  Comment: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Comment[];
+
+  @OneToMany(() => Member, (member) => member.user)
+  member: Member[];
 }

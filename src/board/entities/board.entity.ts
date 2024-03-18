@@ -1,3 +1,4 @@
+import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -31,11 +32,11 @@ export class Board {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @ManyToOne(() => User, (User) => User.board)
+  @ManyToOne(() => User, (User) => User.Board)
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToMany(() => Member, (Member) => Member.board, { onDelete: 'CASCADE' })
+  @OneToMany(() => Member, (member) => member.board, { onDelete: 'CASCADE' })
   member: Member[];
 
   @OneToMany(() => List, (List) => List.board, { onDelete: 'CASCADE' })
