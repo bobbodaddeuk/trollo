@@ -5,15 +5,15 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
-import { ColumnModule } from './column/column.module';
 import { CommentModule } from './comment/comment.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Board } from './board/entities/board.entity';
 import { Card } from './card/entities/card.entity';
 import { User } from './user/entities/user.entity';
-import { Column } from './column/entities/column.entity';
 import { Comment } from './comment/entities/comment.entity';
+import { ListModule } from './list/list.module';
+import { List } from './list/entities/list.entity';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -25,7 +25,7 @@ const typeOrmModuleOptions = {
     host: ConfigService.get('DB_HOST'),
     port: ConfigService.get('DB_PORT'),
     database: ConfigService.get('DB_NAME'),
-    entities: [User, Card, Board, Column, Comment],
+    entities: [User, Card, Board, List, Comment],
     synchronize: ConfigService.get('DB_SYNC'),
     logging: true,
   }),
@@ -50,7 +50,7 @@ const typeOrmModuleOptions = {
     UserModule,
     CardModule,
     BoardModule,
-    ColumnModule,
+    ListModule,
     CommentModule,
   ],
   controllers: [AppController],

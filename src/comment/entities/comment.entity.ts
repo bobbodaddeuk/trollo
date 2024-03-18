@@ -7,14 +7,20 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 })
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: number;
+  commentId: number;
+
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  cardId: number;
 
   @Column({ type: 'varchar', select: true, nullable: true })
-  comment: string;
+  content: string;
 
   @ManyToOne(() => User, (user) => user.comment)
-  user: User[];
+  user: User;
 
   @ManyToOne(() => Card, (card) => card.comment)
-  card: Card[];
+  card: Card;
 }
