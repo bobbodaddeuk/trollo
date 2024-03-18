@@ -2,12 +2,15 @@ import { Member } from 'src/member/entities/member.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
+  Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+@Entity({ name: 'board' })
 @Index('boardId', ['boardId'], { unique: true })
 export class Board {
   @PrimaryGeneratedColumn()
