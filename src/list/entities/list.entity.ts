@@ -16,8 +16,9 @@ export class List {
   @PrimaryGeneratedColumn()
   listId: number;
 
-  @Column({ type: 'int' })
-  userId: number;
+  // 이미 아래쪽에서 User와 관계를 정의했으므로 userId 컬럼을 만들어줄 필요가 없음
+  // @Column({ type: 'int' })
+  // userId: number;
 
   @Column({ type: 'int' })
   boardId: number;
