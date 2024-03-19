@@ -16,9 +16,12 @@ export class CommentController {
   //댓글 달기
   @Post('/:boardId/:listId/:cardId')
   async createComment(
-    @Param('boardId') boardId: number,
-    @Param('listId') listId: number,
-    @Param('cardId') cardId: number,
+    @Param()
+    {
+      boardId,
+      listId,
+      cardId,
+    }: { boardId: number; listId: number; cardId: number },
     @Body() createCommentDto: CreateCommentDto,
   ) {
     const comment = await this.commentService.createComment(
@@ -32,9 +35,16 @@ export class CommentController {
   // 댓글 조회
   @Get('/:boardId/:listId/:cardId')
   findAllComment(
-    @Param('boardId') boardId: number,
-    @Param('listId') listId: number,
-    @Param('cardId') cardId: number,
+    @Param()
+    {
+      boardId,
+      listId,
+      cardId,
+    }: {
+      boardId: number;
+      listId: number;
+      cardId: number;
+    },
   ) {
     const comments = this.commentService.findAllComment(
       boardId,
@@ -47,9 +57,16 @@ export class CommentController {
   // 댓글 수정
   @Put('/:boardId/:listId/:cardId')
   updateComment(
-    @Param('boardId') boardId: number,
-    @Param('listId') listId: number,
-    @Param('cardId') cardId: number,
+    @Param()
+    {
+      boardId,
+      listId,
+      cardId,
+    }: {
+      boardId: number;
+      listId: number;
+      cardId: number;
+    },
   ) {
     return this.commentService.updateComment(boardId, listId, cardId);
   }
@@ -57,9 +74,16 @@ export class CommentController {
   // 댓글 삭제
   @Delete('/:boardId/:listId/:cardId')
   deleteComment(
-    @Param('boardId') boardId: number,
-    @Param('listId') listId: number,
-    @Param('cardId') cardId: number,
+    @Param()
+    {
+      boardId,
+      listId,
+      cardId,
+    }: {
+      boardId: number;
+      listId: number;
+      cardId: number;
+    },
   ) {
     return this.commentService.deleteComment(boardId, listId, cardId);
   }
