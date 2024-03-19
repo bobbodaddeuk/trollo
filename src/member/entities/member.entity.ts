@@ -15,12 +15,6 @@ export class Member {
   @PrimaryGeneratedColumn()
   memberId: number;
 
-  @Column({ type: 'int', nullable: false })
-  userId: number;
-
-  @Column({ type: 'int', nullable: true })
-  boardId: number;
-
   @Column({
     type: 'enum',
     enum: Grade,
