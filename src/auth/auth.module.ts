@@ -8,10 +8,15 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { Member } from 'src/member/entities/member.entity';
+import { List } from 'src/list/entities/list.entity';
+import { Board } from 'src/board/entities/board.entity';
+import { Card } from 'src/card/entities/card.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Card, Board, List, Comment, Member]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

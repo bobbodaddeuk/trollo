@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 import { SignInDto } from './dtos/sign-in.dto';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
@@ -24,12 +24,14 @@ export class AuthService {
     }
 
     const existedUser = await this.userRepository.findOneBy({ email });
+    console.log(existedUser);
     if (existedUser) {
       throw new BadRequestException('이미 가입 된 이메일 입니다.');
     }
 
-    const hashRounds = this.configService.get<number>('PASSWORD_HASH_ROUNDS');
-    const hashedPassword = bcrypt.hashSync(password, hashRounds);
+    // const hashRounds = this.configService.get<number>('PASSWORD_HASH_ROUNDS');
+    // const hashedPassword = bcrypt.hashSync(password, hashRounds);
+    const hashedPassword = await hash(password, 10);
 
     const user = await this.userRepository.save({
       email,
