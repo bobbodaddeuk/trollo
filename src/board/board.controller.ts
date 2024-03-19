@@ -1,25 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
-@Controller('board')
+@Controller('boards') // userId 필요
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   @Post()
-  create(@Body() createBoardDto: CreateBoardDto) {
+  createBoard(@Body() createBoardDto: CreateBoardDto) {
     return this.boardService.create(createBoardDto);
   }
 
   @Get()
-  findAll() {
-    return this.boardService.findAll();
+  async findAll() {
+    return await this.boardService.findAll(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.boardService.findOne(+id);
+  @Get()
+  async findAllMyTeamProject() {
+    return await this.boardService.findAllMyTeamProject(userId);
+  }
+
+  @Get(':boardId')
+  findOne(@Param('boardId') boardId: number) {
+    return this.boardService.findOne(boardId);
   }
 
   @Patch(':id')
