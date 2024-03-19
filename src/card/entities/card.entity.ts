@@ -8,8 +8,10 @@ import {
 } from 'typeorm';
 
 import { CardWorker } from '../types/card.type';
-import { List } from '../../list/entities/list.entity';
+import { List } from 'src/list/entities/list.entity';
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
+import { User } from 'src/user/entities/user.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity({
   name: 'cards',
@@ -45,9 +47,12 @@ export class Card {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Comment, (comments) => comments.card, { cascade: true })
-  comments: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.card, { cascade: true })
+  comment: Comment[];
 
   @ManyToOne(() => List, (list) => list.card)
   list: List;
+
+  @ManyToOne(() => User, (user) => user.card)
+  user: User;
 }
