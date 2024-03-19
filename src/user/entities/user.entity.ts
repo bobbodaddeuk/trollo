@@ -12,20 +12,43 @@ import { Card } from 'src/card/entities/card.entity';
 import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
 
 @Entity({
   name: 'user',
 })
 export class User {
-  @PrimaryGeneratedColumn({ unsigned: true })
+  @PrimaryGeneratedColumn()
   id: number;
 
+  @IsNotEmpty({ message: '이메일을 입력해 주세요.' })
+  @IsEmail()
   @Column({ unique: true })
   email: string;
 
+  @IsString()
+  @IsStrongPassword(
+    { minLength: 6 },
+    {
+      message:
+        '비밀번호는 영문 알파벳 대,소문자, 숫자, 특수문자를 포함해서 8자리 이상으로 입력해야 합니다.',
+    },
+  )
+  @IsNotEmpty({
+    message:
+      '비밀번호는 영문 알파벳 대,소문자, 숫자, 특수문자를 포함해서 8자리 이상으로 입력해야 합니다.',
+  })
   @Column({ select: false })
   password: string;
 
+  @IsNotEmpty({ message: '이름은 비워 둘 수 없습니다.' })
+  @IsString()
   @Column()
   name: string;
 
