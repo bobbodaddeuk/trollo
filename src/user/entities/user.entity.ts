@@ -38,7 +38,7 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Board, (Board) => board.user)
+  @OneToMany(() => Board, (board) => board.user)
   Board: Board[];
 
   @OneToMany(() => List, (List) => List.user)

@@ -1,5 +1,6 @@
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -36,4 +37,7 @@ export class List {
 
   @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.list)
+  comment: Comment[];
 }
