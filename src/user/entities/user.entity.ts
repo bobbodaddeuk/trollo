@@ -16,8 +16,9 @@ import { Comment } from 'src/comment/entities/comment.entity';
 @Entity({
   name: 'user',
 })
+// { unsigned: true }
 export class User {
-  @PrimaryGeneratedColumn({ unsigned: true })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ unique: true })
