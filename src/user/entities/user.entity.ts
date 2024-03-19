@@ -1,11 +1,3 @@
-// import {
-//   IsEmail,
-//   IsEnum,
-//   IsNotEmpty,
-//   IsNumber,
-//   IsString,
-//   IsStrongPassword,
-// } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -44,15 +36,15 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Board, (Board) => board.user)
-  Board: Board[];
+  //   @OneToMany(() => Board, (Board) => board.user)
+  //   Board: Board[];
 
-  @OneToMany(() => List, (List) => List.user)
-  List: List[];
+  //   @OneToMany(() => List, (List) => List.user)
+  //   List: List[];
 
-  @OneToMany(() => Card, (Card) => Card.user)
-  Card: Card[];
+  //   @OneToMany(() => Card, (Card) => Card.user)
+  //   Card: Card[];
 
-  @OneToMany(() => Comment, (Comment) => Comment.user)
-  Comment: Comment[];
+  //   @OneToMany(() => Comment, (Comment) => Comment.user)
+  //   Comment: Comment[];
 }

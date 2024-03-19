@@ -14,6 +14,8 @@ import { ListModule } from './list/list.module';
 import { List } from './list/entities/list.entity';
 import { configModuleValidationSchema } from './configs/env-validation.config';
 import { TypeOrmModuleOptions } from './configs/database.config';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { TypeOrmModuleOptions } from './configs/database.config';
       validationSchema: configModuleValidationSchema,
     }),
     TypeOrmModule.forRootAsync(TypeOrmModuleOptions),
+    AuthModule,
     UserModule,
     CardModule,
     BoardModule,
@@ -29,5 +32,6 @@ import { TypeOrmModuleOptions } from './configs/database.config';
     CommentModule,
   ],
   controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
