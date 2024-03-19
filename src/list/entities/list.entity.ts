@@ -17,12 +17,6 @@ export class List {
   @PrimaryGeneratedColumn()
   listId: number;
 
-  @Column({ type: 'int' })
-  userId: number;
-
-  @Column({ type: 'int' })
-  boardId: number;
-
   @Column({ type: 'varchar', select: true, nullable: false })
   title: string;
 

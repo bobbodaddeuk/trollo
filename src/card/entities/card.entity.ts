@@ -20,15 +20,6 @@ export class Card {
   @PrimaryGeneratedColumn({ unsigned: true })
   cardId: number;
 
-  @Column({ type: 'int' })
-  listId: number;
-
-  @Column({ type: 'int' })
-  boardId: number;
-
-  @Column({ type: 'int' })
-  userId: number;
-
   @Column()
   title: string;
 

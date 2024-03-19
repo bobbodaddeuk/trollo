@@ -18,15 +18,6 @@ export class Board {
   @PrimaryGeneratedColumn()
   boardId: number;
 
-  @Column({ type: 'int', nullable: false })
-  userId: number;
-
-  @Column({ type: 'int', nullable: true })
-  memberId: number;
-
-  @Column({ type: 'int', nullable: true })
-  listId: number;
-
   @Column({ type: 'varchar', nullable: false })
   boardName: string;
 
