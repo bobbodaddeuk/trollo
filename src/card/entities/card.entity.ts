@@ -47,7 +47,7 @@ export class Card {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Comment, (comment) => comment.card, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.card)
   comment: Comment[];
 
   @ManyToOne(() => List, (list) => list.card)

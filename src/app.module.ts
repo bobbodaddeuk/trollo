@@ -10,6 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ListModule } from './list/list.module';
 import { configModuleValidationSchema } from './configs/env-validation.config';
 import { typeOrmModuleOptions } from './configs/database.config';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { typeOrmModuleOptions } from './configs/database.config';
       validationSchema: configModuleValidationSchema,
     }),
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    AuthModule,
     UserModule,
     CardModule,
     BoardModule,
@@ -26,5 +29,6 @@ import { typeOrmModuleOptions } from './configs/database.config';
     MemberModule,
   ],
   controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
