@@ -44,6 +44,8 @@ export class Card {
   @ManyToOne(() => User, (user) => user.card, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => CardWorker, (cardworkers) => cardworkers.card, { cascade: true })
-  cardworkers: CardWorker;
+  @OneToMany(() => CardWorker, (cardWorkers) => cardWorkers.card, {
+    cascade: true,
+  })
+  cardWorkers: CardWorker;
 }
