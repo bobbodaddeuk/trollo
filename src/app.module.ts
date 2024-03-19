@@ -4,16 +4,12 @@ import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
 import { CommentModule } from './comment/comment.module';
+import { MemberModule } from './member/member.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Board } from './board/entities/board.entity';
-import { Card } from './card/entities/card.entity';
-import { User } from './user/entities/user.entity';
-import { Comment } from './comment/entities/comment.entity';
 import { ListModule } from './list/list.module';
-import { List } from './list/entities/list.entity';
 import { configModuleValidationSchema } from './configs/env-validation.config';
-import { TypeOrmModuleOptions } from './configs/database.config';
+import { typeOrmModuleOptions } from './configs/database.config';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 
@@ -24,12 +20,12 @@ import { AuthModule } from './auth/auth.module';
       validationSchema: configModuleValidationSchema,
     }),
     TypeOrmModule.forRootAsync(TypeOrmModuleOptions),
-    AuthModule,
     UserModule,
     CardModule,
     BoardModule,
     ListModule,
     CommentModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],

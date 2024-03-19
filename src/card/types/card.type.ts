@@ -1,4 +1,4 @@
 export enum CardWorker {
-    Reader = 'Reader',
-    Writer = 'Writer',
+  Reader = 'Reader',
+  Writer = 'Writer',
 }

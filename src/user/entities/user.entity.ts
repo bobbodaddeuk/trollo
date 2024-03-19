@@ -10,6 +10,8 @@ import { UserRole } from '../types/user-role.type';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
 import { List } from 'src/list/entities/list.entity';
+import { Member } from 'src/member/entities/member.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity({
   name: 'user',
@@ -36,15 +38,18 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  //   @OneToMany(() => Board, (Board) => board.user)
-  //   Board: Board[];
+  @OneToMany(() => Board, (board) => board.user)
+  Board: Board[];
 
-  //   @OneToMany(() => List, (List) => List.user)
-  //   List: List[];
+  @OneToMany(() => List, (List) => List.user)
+  list: List[];
 
-  //   @OneToMany(() => Card, (Card) => Card.user)
-  //   Card: Card[];
+  @OneToMany(() => Card, (card) => card.user)
+  card: Card[];
 
-  //   @OneToMany(() => Comment, (Comment) => Comment.user)
-  //   Comment: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Comment[];
+
+  @OneToMany(() => Member, (member) => member.user)
+  member: Member[];
 }
