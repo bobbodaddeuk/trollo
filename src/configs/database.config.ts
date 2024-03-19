@@ -1,20 +1,26 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Board } from 'src/board/entities/board.entity';
+import { Card } from 'src/card/entities/card.entity';
+import { List } from 'src/list/entities/list.entity';
+import { Member } from 'src/member/entities/member.entity';
+import { User } from 'src/user/entities/user.entity';
 
-export const TypeOrmModuleOptions: TypeOrmModuleAsyncOptions = {
-  imports: [ConfigModule],
-  inject: [ConfigService],
-  useFactory: (configService: ConfigService) => ({
-    namingStrategy: new SnakeNamingStrategy(),
+export const typeOrmModuleOptions = {
+  useFactory: async (
+    configService: ConfigService,
+  ): Promise<TypeOrmModuleOptions> => ({
     type: 'mysql',
     host: configService.get<string>('DB_HOST'),
     port: configService.get<number>('DB_PORT'),
     username: configService.get<string>('DB_USERNAME'),
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_NAME'),
+    entities: [User, Board, Member, List, Card],
     synchronize: configService.get<boolean>('DB_SYNC'),
     autoLoadEntities: true,
     logging: true,
   }),
+  inject: [ConfigService],
 };
+// 일단 entity가 없음!!
