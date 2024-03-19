@@ -1,34 +1,66 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 
-@Controller('comment')
+@Controller('/comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
-
-  @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.create(createCommentDto);
+  //댓글 달기
+  @Post('/:boardId/:listId/:cardId')
+  async createComment(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+    @Param('cardId') cardId: number,
+    @Body() createCommentDto: CreateCommentDto,
+  ) {
+    const comment = await this.commentService.createComment(
+      boardId,
+      listId,
+      cardId,
+      createCommentDto,
+    );
+    return comment;
+  }
+  // 댓글 조회
+  @Get('/:boardId/:listId/:cardId')
+  findAllComment(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+    @Param('cardId') cardId: number,
+  ) {
+    const comments = this.commentService.findAllComment(
+      boardId,
+      listId,
+      cardId,
+    );
+    return comments;
   }
 
-  @Get()
-  findAll() {
-    return this.commentService.findAll();
+  // 댓글 수정
+  @Put('/:boardId/:listId/:cardId')
+  updateComment(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+    @Param('cardId') cardId: number,
+  ) {
+    return this.commentService.updateComment(boardId, listId, cardId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  // 댓글 삭제
+  @Delete('/:boardId/:listId/:cardId')
+  deleteComment(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+    @Param('cardId') cardId: number,
+  ) {
+    return this.commentService.deleteComment(boardId, listId, cardId);
   }
 }
