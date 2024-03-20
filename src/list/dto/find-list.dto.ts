@@ -1,1 +1,1 @@
-export class FindListDto {}
+export class FindAllListsDto {}

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpStatus } from '@nestjs/common';
 import { CreateListDto } from './dto/create-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -16,13 +16,19 @@ export class ListService {
   // 컬럼 1개 찾기
 
   // 컬럼 생성
-  async createList(createListDto: CreateListDto): Promise<List> {
+  async createList(createListDto: CreateListDto) {
     const { title } = createListDto;
     const newList = await this.ListRepository.create({
       title,
     });
-    await this.ListRepository.save(createListDto);
-    return newList;
+    const savedList = await this.ListRepository.save(createListDto);
+
+    if (newList) {
+      status: HttpStatus.CREATED;
+      message: `${title} 컬럼이 생성되었습니다.`;
+      result: savedList;
+    }
+    return savedList;
   }
 
   // 컬럼 제목 변경
@@ -46,7 +52,15 @@ export class ListService {
         listId,
       },
     });
-    return changedListTitle;
+
+    if (changedListTitle) {
+      return {
+        status: HttpStatus.OK,
+        message: `${listId}번 컬럼 제목이 정상적으로 변경되었습니다.`,
+        result: changedListTitle,
+      };
+    }
+    // return changedListTitle;
   }
 
   // 컬럼 삭제하기
@@ -58,6 +72,13 @@ export class ListService {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
     const deleteList = await this.ListRepository.delete(listId);
-    return deleteList;
+    if (deleteList) {
+      return {
+        status: HttpStatus.OK,
+        message: `${listId}번 컬럼이 정상적으로 삭제되었습니다.`,
+        result: deleteList,
+      };
+    }
+    // return deleteList;
   }
 }
