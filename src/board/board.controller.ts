@@ -6,11 +6,20 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { GradesGuard } from './guards/grades.guard';
+import { Grades } from './decorators/grade.decorator';
+import { MemberGrade } from 'src/member/type/grade.type';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { userInfo } from 'src/utils/userInfo.decorator';
+import { User } from 'src/user/entities/user.entity';
 
+@UseGuards(JwtAuthGuard)
+@UseGuards(GradesGuard)
 @Controller('boards') // userId 필요
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
@@ -21,13 +30,13 @@ export class BoardController {
   }
   // 내가 생성한 board 조회
   @Get()
-  async findAll() {
-    return await this.boardService.findAll(userId);
+  async findAll(@userInfo() user: User) {
+    return await this.boardService.findAll(user);
   }
   // 내가 참여하는 board 조회
   @Get()
-  async findAllMyTeamProject() {
-    return await this.boardService.findAllMyTeamProject(userId);
+  async findAllMyTeamProject(@userInfo() user: User) {
+    return await this.boardService.findAllMyTeamProject(user);
   }
   // board 상세조회
   @Get(':boardId')
@@ -35,13 +44,18 @@ export class BoardController {
     return this.boardService.findOne(boardId);
   }
   // board 수정
+  @Grades(MemberGrade.OWNER)
   @Patch(':boardId')
-  update(@Param('id') id: string, @Body() updateBoardDto: UpdateBoardDto) {
-    return this.boardService.update(+id, updateBoardDto);
+  update(
+    @Param('boardId') boardId: number,
+    @Body() updateBoardDto: UpdateBoardDto,
+  ) {
+    return this.boardService.update(boardId, updateBoardDto);
   }
   // board 삭제
+  @Grades(MemberGrade.OWNER)
   @Delete(':boardId')
-  remove(@Param('id') id: string) {
-    return this.boardService.remove(+id);
+  remove(@Param('boardId') boardId: number) {
+    return this.boardService.remove(boardId);
   }
 }

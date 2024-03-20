@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './entities/board.entity';
 import { Member } from 'src/member/entities/member.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class BoardService {
@@ -14,30 +15,33 @@ export class BoardService {
     @InjectRepository(Member)
     private readonly memberRepository: Repository<Member>,
   ) {}
-
+  // 보드 생성
   async create(createBoardDto: CreateBoardDto) {
     const { boardName, description } = createBoardDto;
     const board = await this.boardRepository.save({ boardName, description });
     return board;
   }
 
-  async findAll(userId) {
-    return await this.boardRepository.find({ where: userId });
+  async findAll(user: User) {
+    const { id } = user;
+    return await this.boardRepository.find({ where: { userId: id } });
   }
+  // 내가 멤버로 속한 보드 모두 조회
+  async findAllMyTeamProject(user: User) {
+    const { id } = user;
 
-  async findAllMyTeamProject(userId) {
     const findAllMyProject = await this.boardRepository.find({
       relations: { member: true },
       where: {
         member: {
-          userId: userId,
+          userId: id,
         },
       },
     });
 
     return findAllMyProject;
   }
-
+  // 보드 상세 조회
   async findOne(boardId: number) {
     const findBoard = await this.boardRepository.findOne({
       where: { boardId },
