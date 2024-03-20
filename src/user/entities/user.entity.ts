@@ -15,7 +15,6 @@ import { Comment } from 'src/comment/entities/comment.entity';
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
   IsStrongPassword,
 } from 'class-validator';
