@@ -4,10 +4,12 @@ import { Comment } from 'src/comment/entities/comment.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
@@ -22,6 +24,12 @@ export class List {
 
   @Column({ type: 'int' })
   index: number;
+
+  @CreateDateColumn({ type: 'timestamp', nullable: true })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', nullable: true })
+  updatedAt: Date;
 
   @OneToMany(() => Card, (card) => card.list)
   card: Card[];

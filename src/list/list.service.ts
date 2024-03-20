@@ -79,6 +79,5 @@ export class ListService {
         result: deleteList,
       };
     }
-    // return deleteList;
   }
 }
