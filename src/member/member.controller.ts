@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -6,29 +14,30 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 @Controller('member')
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
-
-  @Post()
-  create(@Body() createMemberDto: CreateMemberDto) {
-    return this.memberService.create(createMemberDto);
+  // 멤버 생성(초대)
+  @Post(':boardId')
+  create(
+    @Body() createMemberDto: CreateMemberDto,
+    @Param('boardId') boardId: number,
+  ) {
+    return this.memberService.create(createMemberDto, boardId);
   }
-
-  @Get()
-  findAll() {
-    return this.memberService.findAll();
+  // 보드 멤버 조회
+  @Get(':boardId')
+  findAll(@Param('boardId') boardId: number) {
+    return this.memberService.findAll(boardId);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.memberService.findOne(+id);
+  // 멤버 권한 수정하기
+  @Patch(':memberId')
+  update(
+    @Param('memberId') memberId: number,
+    @Body() updateMemberDto: UpdateMemberDto,
+  ) {
+    return this.memberService.update(memberId, updateMemberDto);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
-    return this.memberService.update(+id, updateMemberDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.memberService.remove(+id);
+  // 멤버 삭제하기
+  @Delete(':boardId/:memberId')
+  remove(@Param('memberId') memberId: number) {
+    return this.memberService.remove(memberId);
   }
 }
