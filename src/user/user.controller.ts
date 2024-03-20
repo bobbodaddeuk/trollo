@@ -1,42 +1,53 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
+  HttpStatus,
   Param,
-  Delete,
+  ParseIntPipe,
+  Patch,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { userInfo } from 'src/utils/userInfo.decorator';
+import { User } from './entities/user.entity';
 
-@Controller('user')
+@ApiTags('사용자')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  async findMe(@userInfo() user: User) {
+    const data = await this.userService.findOneById(user);
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+    return {
+      statusCode: HttpStatus.OK,
+      message: '내 정보 조회에 성공했습니다.',
+      data,
+    };
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch('/me')
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @userInfo() user: User,
+  ) {
+    const updatedUser = await this.userService.updateUser(
+      user.id,
+      updateUserDto,
+    );
+    return {
+      statusCode: HttpStatus.OK,
+      message: '내 정보 수정에 성공했습니다.',
+      data: updatedUser,
+    };
   }
 }

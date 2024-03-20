@@ -1,5 +1,6 @@
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -16,13 +17,6 @@ export class List {
   @PrimaryGeneratedColumn()
   listId: number;
 
-  // 이미 아래쪽에서 User와 관계를 정의했으므로 userId 컬럼을 만들어줄 필요가 없음
-  // @Column({ type: 'int' })
-  // userId: number;
-
-  @Column({ type: 'int' })
-  boardId: number;
-
   @Column({ type: 'varchar', select: true, nullable: false })
   title: string;
 
@@ -37,4 +31,7 @@ export class List {
 
   @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.list)
+  comment: Comment[];
 }

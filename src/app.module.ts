@@ -11,6 +11,8 @@ import { ListModule } from './list/list.module';
 import { configModuleValidationSchema } from './configs/env-validation.config';
 import { typeOrmModuleOptions } from './configs/database.config';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,7 +21,8 @@ import { AppService } from './app.service';
       validationSchema: configModuleValidationSchema,
     }),
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
-    // UserModule,
+    AuthModule,
+    UserModule,
     CardModule,
     BoardModule,
     ListModule,
