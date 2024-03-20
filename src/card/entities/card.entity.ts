@@ -11,7 +11,7 @@ import { List } from 'src/list/entities/list.entity';
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
 import { User } from 'src/user/entities/user.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
-import { CardWorker } from './cardworkers.entity';
+// import { CardWorker } from './cardworkers.entity';
 
 @Entity({
   name: 'cards',
@@ -44,8 +44,8 @@ export class Card {
   @ManyToOne(() => User, (user) => user.card, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => CardWorker, (cardWorkers) => cardWorkers.card, {
-    cascade: true,
-  })
-  cardWorkers: CardWorker;
+  // @OneToMany(() => CardWorker, (cardWorkers) => cardWorkers.card, {
+  //   cascade: true,
+  // })
+  // cardWorkers: CardWorker;
 }
