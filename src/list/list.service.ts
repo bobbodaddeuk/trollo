@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { List } from './entities/list.entity';
 // import { CreateBoardDto } from 'src/board/dto/create-board.dto';
 import { UpdatedListDto } from './dto/update-list.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ListService {
@@ -16,19 +17,15 @@ export class ListService {
   // 컬럼 1개 찾기
 
   // 컬럼 생성
-  async createList(createListDto: CreateListDto) {
+  async createList(createListDto: CreateListDto, user: User) {
     const { title } = createListDto;
-    const newList = await this.ListRepository.create({
+    const { id } = user;
+    console.log(title);
+    const newList = await this.ListRepository.save({
       title,
+      userId: id,
     });
-    const savedList = await this.ListRepository.save(createListDto);
-
-    if (newList) {
-      status: HttpStatus.CREATED;
-      message: `${title} 컬럼이 생성되었습니다.`;
-      result: savedList;
-    }
-    return savedList;
+    return newList.title;
   }
 
   // 컬럼 제목 변경

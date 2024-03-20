@@ -1,5 +1,5 @@
 import { Comment } from 'src/comment/entities/comment.entity';
-import { List } from 'src/list/entities/list.entity';
+// import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -31,8 +31,8 @@ export class Board {
   @OneToMany(() => Member, (member) => member.board, { onDelete: 'CASCADE' })
   member: Member[];
 
-  @OneToMany(() => List, (List) => List.board, { onDelete: 'CASCADE' })
-  list: List[];
+  // @OneToMany(() => List, (List) => List.board, { onDelete: 'CASCADE' })
+  // list: List[];
 
   @OneToMany(() => Comment, (comment) => comment.board, { onDelete: 'CASCADE' })
   comment: Comment[];
