@@ -14,11 +14,11 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { GradesGuard } from './guards/grades.guard';
 import { Grades } from './decorators/grade.decorator';
 import { MemberGrade } from 'src/member/type/grade.type';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { userInfo } from 'src/utils/userInfo.decorator';
 import { User } from 'src/user/entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard)
 @UseGuards(GradesGuard)
 @Controller('boards') // userId 필요
 export class BoardController {
