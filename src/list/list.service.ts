@@ -48,4 +48,16 @@ export class ListService {
     });
     return changedListTitle;
   }
+
+  // 컬럼 삭제하기
+  async deleteList(listId: number) {
+    const list = await this.ListRepository.findOne({
+      where: { listId },
+    });
+    if (!list) {
+      throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
+    }
+    const deleteList = await this.ListRepository.delete(listId);
+    return deleteList;
+  }
 }
