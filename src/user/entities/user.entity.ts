@@ -22,6 +22,7 @@ import {
 @Entity({
   name: 'user',
 })
+// { unsigned: true }
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
