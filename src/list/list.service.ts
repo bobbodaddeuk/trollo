@@ -20,7 +20,6 @@ export class ListService {
   async createList(createListDto: CreateListDto, user: User) {
     const { title } = createListDto;
     const { id } = user;
-    console.log(title);
     const newList = await this.ListRepository.save({
       title,
       userId: id,
@@ -29,24 +28,27 @@ export class ListService {
   }
 
   // 컬럼 제목 변경
-  /* 1. 변경하고자 하는 컬럼을 찾아준다.
-     2. 해당 컬럼의 제목을 바꿀 수 있는 로직을 추가해준다.
-     3. 변경된 컬럼을 반환해준다? */
-  async changeListTitle(updateListDto: UpdatedListDto, listId: number) {
+  async changeListTitle(
+    updateListDto: UpdatedListDto,
+    listId: number,
+    user: User,
+  ) {
     // 찾고 싶은 게시물을 listId를 통해서 찾아준다.
+    const { id } = user;
     const list = await this.ListRepository.findOne({
-      where: { listId },
+      where: { listId, userId: id },
     });
     if (!list) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
     // 레포지토리에 업데이트를 해줘야함
-    await this.ListRepository.update({ listId }, updateListDto);
+    await this.ListRepository.update({ listId, userId: id }, updateListDto);
 
     // list의 타이틀을 변경된 것을 DB에 넣어야함
     const changedListTitle = await this.ListRepository.findOne({
       where: {
         listId,
+        userId: id,
       },
     });
 
@@ -61,14 +63,15 @@ export class ListService {
   }
 
   // 컬럼 삭제하기
-  async deleteList(listId: number) {
+  async deleteList(listId: number, user: User) {
+    const { id } = user;
     const list = await this.ListRepository.findOne({
-      where: { listId },
+      where: { listId, userId: id },
     });
     if (!list) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
-    const deleteList = await this.ListRepository.delete(listId);
+    const deleteList = await this.ListRepository.delete({ listId, userId: id });
     if (deleteList) {
       return {
         status: HttpStatus.OK,

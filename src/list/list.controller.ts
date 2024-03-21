@@ -25,7 +25,7 @@ export class ListController {
 
   // 컬럼 생성하기.
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post() // url 추가적으로 작성해줘야함(기능은 잘 돌아감)
   // 클라이언트가 body에 담아서 보내야 하는 것
   create(@Body() createListDto: CreateListDto, @userInfo() user: User) {
     this.listService.createList(createListDto, user);
@@ -37,17 +37,20 @@ export class ListController {
   }
 
   // 컬럼 제목 변경
-  @Patch('/list/:boardId/list/:listId')
+  @UseGuards(JwtAuthGuard)
+  @Patch('/:listId')
   changeListTile(
-    @Body() title: UpdatedListDto,
+    @Body() updatedListDto: UpdatedListDto,
     @Param('listId') listId: number,
+    @userInfo() user: User,
   ) {
-    return this.listService.changeListTitle(title, listId);
+    return this.listService.changeListTitle(updatedListDto, listId, user);
   }
 
   // 컬럼 삭제 하기
-  @Delete('/list/:boardId/list/:listId')
-  deleteList(@Param('listId') listId: number) {
-    return this.listService.deleteList(listId);
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:listId')
+  deleteList(@Param('listId') listId: number, @userInfo() user: User) {
+    return this.listService.deleteList(listId, user);
   }
 }
