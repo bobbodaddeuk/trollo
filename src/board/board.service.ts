@@ -67,8 +67,9 @@ export class BoardService {
     return findAllMyProject;
   }
   // 보드 상세 조회
-  async findOne(boardId: number, user: User) {
+  async findBoard(boardId: number, user: User) {
     const { id } = user;
+    console.log('id', id);
     const findBoard = await this.boardRepository.findOne({
       where: { boardId, userId: id },
     });

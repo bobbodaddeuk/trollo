@@ -32,8 +32,17 @@ export class MemberService {
     return existedUser;
   }
   // 보드에 유저 초대
-  async create(createMemberDto: CreateMemberDto, boardId: number) {
+  async create(createMemberDto: CreateMemberDto, boardId: number, user: User) {
     const { id, grade } = createMemberDto;
+    const userId = user.id;
+    console.log('멤버 초대:', id, grade);
+    const findBoardOwner = await this.boardRepository.findOne({
+      where: { boardId, userId },
+    });
+
+    if (!findBoardOwner) {
+      throw new NotFoundException('해당 보드를 찾을 수 없습니다.');
+    }
 
     await this.existedUser(id);
 
@@ -49,7 +58,7 @@ export class MemberService {
   async findAll(boardId: number) {
     const boardWorkers = await this.memberRepository.find({
       where: { boardId },
-      select: { memberId: true },
+      select: { memberId: true, grade: true },
     });
     return boardWorkers;
   }
@@ -65,19 +74,20 @@ export class MemberService {
 
     return findBoardMember;
   }
-  // 보드 멤버의 권한 수정
+  // 보드 멤버 수정
   async update(memberId: number, updateMemberDto: UpdateMemberDto) {
-    const existMember = await this.existMember(memberId);
+    await this.existMember(memberId);
     const { grade } = updateMemberDto;
-    const updateMember = await this.memberRepository.update(
-      existMember.memberId,
-      { grade },
-    );
+    const updateMember = await this.memberRepository.save({
+      memberId,
+      grade,
+    });
 
     return updateMember;
   }
   // 보드 멤버 삭제
   async remove(memberId: number) {
-    return await this.memberRepository.delete({ memberId });
+    await this.memberRepository.delete({ memberId });
+    return memberId;
   }
 }

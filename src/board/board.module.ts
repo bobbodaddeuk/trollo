@@ -6,26 +6,11 @@ import { User } from 'src/user/entities/user.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { Board } from './entities/board.entity';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { ConfigModule } from '@nestjs/config';
+import { BoardMemberGuard } from './guards/board-member.guard';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User, Member, Board]),
-    PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: {
-          expiresIn: '12h',
-        },
-      }),
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([User, Member, Board]), PassportModule],
   controllers: [BoardController],
-  providers: [BoardService],
+  providers: [BoardService, BoardMemberGuard],
 })
 export class BoardModule {}

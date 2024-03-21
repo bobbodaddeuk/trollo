@@ -24,7 +24,6 @@ export class Member {
   @Column({
     type: 'enum',
     enum: MemberGrade,
-    nullable: false,
     default: MemberGrade.INVITED,
   })
   grade: MemberGrade;
@@ -34,6 +33,6 @@ export class Member {
   board: Board;
 
   @ManyToOne(() => User, (User) => User.member)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'id' })
   user: User;
 }
