@@ -3,10 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Param,
-  ParseIntPipe,
   Patch,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';

@@ -36,16 +36,16 @@ export class List {
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt: Date;
 
-  @OneToMany(() => Card, (card) => card.list)
+  @OneToMany(() => Card, (card) => card.list, { onDelete: 'CASCADE' })
   card: Card[];
 
-  @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Board, (board) => board.list)
   board: Board;
 
   @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.list)
+  @OneToMany(() => Comment, (comment) => comment.list, { onDelete: 'CASCADE' })
   comment: Comment[];
 }
