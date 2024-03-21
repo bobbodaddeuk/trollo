@@ -8,5 +8,6 @@ import { Card } from './entities/card.entity';
   imports: [TypeOrmModule.forFeature([Card])],
   controllers: [CardController],
   providers: [CardService],
+  exports: [TypeOrmModule],
 })
 export class CardModule {}

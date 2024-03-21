@@ -6,24 +6,25 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('/comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
   //댓글 달기
   @Post('/:boardId/:listId/:cardId')
+  @UseGuards(JwtAuthGuard)
   async createComment(
     @Param()
-    {
-      boardId,
-      listId,
-      cardId,
-    }: { boardId: number; listId: number; cardId: number },
+    params: { boardId: number; listId: number; cardId: number },
     @Body() createCommentDto: CreateCommentDto,
   ) {
+    const { boardId, listId, cardId } = params;
     const comment = await this.commentService.createComment(
       boardId,
       listId,
@@ -34,19 +35,17 @@ export class CommentController {
   }
   // 댓글 조회
   @Get('/:boardId/:listId/:cardId')
-  findAllComment(
+  @UseGuards(JwtAuthGuard)
+  async findAllComment(
     @Param()
-    {
-      boardId,
-      listId,
-      cardId,
-    }: {
+    params: {
       boardId: number;
       listId: number;
       cardId: number;
     },
   ) {
-    const comments = this.commentService.findAllComment(
+    const { boardId, listId, cardId } = params;
+    const comments = await this.commentService.findAllComment(
       boardId,
       listId,
       cardId,
@@ -55,36 +54,46 @@ export class CommentController {
   }
 
   // 댓글 수정
-  @Put('/:boardId/:listId/:cardId')
+  @Put('/:boardId/:listId/:cardId/:commentId')
+  @UseGuards(JwtAuthGuard)
   updateComment(
+    @Body() updateCommentDto: UpdateCommentDto,
     @Param()
-    {
-      boardId,
-      listId,
-      cardId,
-    }: {
+    params: {
       boardId: number;
       listId: number;
       cardId: number;
+      commentId: number;
     },
   ) {
-    return this.commentService.updateComment(boardId, listId, cardId);
+    const { boardId, listId, cardId, commentId } = params;
+    return this.commentService.updateComment(
+      boardId,
+      listId,
+      cardId,
+      commentId,
+      updateCommentDto,
+    );
   }
 
   // 댓글 삭제
-  @Delete('/:boardId/:listId/:cardId')
-  deleteComment(
+  @Delete('/:boardId/:listId/:cardId/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async deleteComment(
     @Param()
-    {
-      boardId,
-      listId,
-      cardId,
-    }: {
+    params: {
       boardId: number;
       listId: number;
       cardId: number;
+      commentId: number;
     },
-  ) {
-    return this.commentService.deleteComment(boardId, listId, cardId);
+  ): Promise<{ message: string }> {
+    const { boardId, listId, cardId, commentId } = params;
+    return this.commentService.deleteComment(
+      boardId,
+      listId,
+      cardId,
+      commentId,
+    );
   }
 }
