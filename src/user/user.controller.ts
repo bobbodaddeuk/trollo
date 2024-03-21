@@ -1,10 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
-  Param,
-  ParseIntPipe,
   Patch,
   Request,
   UseGuards,
@@ -48,6 +47,19 @@ export class UserController {
       statusCode: HttpStatus.OK,
       message: '내 정보 수정에 성공했습니다.',
       data: updatedUser,
+    };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete('/me')
+  async deleteUser(@Request() req, @Body() body) {
+    const userId = req.user.id;
+    const { password } = body;
+    await this.userService.deleteUser(userId, password);
+    return {
+      statusCode: HttpStatus.OK,
+      message: '회원 탈퇴에 성공했습니다.',
     };
   }
 }

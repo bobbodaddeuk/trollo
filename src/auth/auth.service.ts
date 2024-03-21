@@ -9,6 +9,7 @@ import { SignInDto } from './dtos/sign-in.dto';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
+  blacklist: any;
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
@@ -64,5 +65,13 @@ export class AuthService {
     }
 
     return { id: user.id };
+  }
+
+  addToBlacklist(token: string): void {
+    this.blacklist.add(token);
+  }
+
+  isTokenBlacklisted(token: string): boolean {
+    return this.blacklist.has(token);
   }
 }
