@@ -30,7 +30,7 @@ export class Member {
   grade: MemberGrade;
 
   @ManyToOne(() => Board, (Board) => Board.member)
-  @JoinColumn({ name: 'boardId' })
+  //@JoinColumn({ name: 'boardId' })
   board: Board;
 
   @ManyToOne(() => User, (User) => User.member)

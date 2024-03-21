@@ -67,9 +67,10 @@ export class BoardService {
     return findAllMyProject;
   }
   // 보드 상세 조회
-  async findOne(boardId: number) {
+  async findOne(boardId: number, user: User) {
+    const { id } = user;
     const findBoard = await this.boardRepository.findOne({
-      where: { boardId },
+      where: { boardId, userId: id },
     });
 
     if (!findBoard) {
@@ -79,19 +80,35 @@ export class BoardService {
     return findBoard;
   }
   // 보드 수정
-  async update(boardId: number, updateBoardDto: UpdateBoardDto) {
-    await this.findOne(boardId);
-
+  async update(boardId: number, updateBoardDto: UpdateBoardDto, user: User) {
+    const { id } = user;
     const { boardName, description } = updateBoardDto;
 
-    return await this.boardRepository.update(boardId, {
+    const findBoard = await this.boardRepository.findOne({
+      where: { boardId, userId: id },
+    });
+
+    if (!findBoard) {
+      throw new NotFoundException('해당 보드가 존재하지 않습니다.');
+    }
+
+    return await this.boardRepository.save({
+      boardId,
       boardName,
       description,
     });
   }
   // 보드 삭제
-  async remove(boardId: number) {
-    await this.findOne(boardId);
-    return this.boardRepository.delete(boardId);
+  async remove(boardId: number, user: User) {
+    const { id } = user;
+
+    const findBoard = await this.boardRepository.findOne({
+      where: { boardId, userId: id },
+    });
+
+    if (!findBoard) {
+      throw new NotFoundException('해당 보드가 존재하지 않습니다.');
+    }
+    return findBoard;
   }
 }

@@ -41,8 +41,8 @@ export class BoardController {
   }
   // board 상세조회
   @Get(':boardId')
-  findOne(@Param('boardId') boardId: number) {
-    return this.boardService.findOne(boardId);
+  findOne(@Param('boardId') boardId: number, @userInfo() user: User) {
+    return this.boardService.findOne(boardId, user);
   }
   // board 수정
   @Grades(MemberGrade.OWNER)
@@ -50,13 +50,14 @@ export class BoardController {
   update(
     @Param('boardId') boardId: number,
     @Body() updateBoardDto: UpdateBoardDto,
+    @userInfo() user: User,
   ) {
-    return this.boardService.update(boardId, updateBoardDto);
+    return this.boardService.update(boardId, updateBoardDto, user);
   }
   // board 삭제
   @Grades(MemberGrade.OWNER)
   @Delete(':boardId')
-  remove(@Param('boardId') boardId: number) {
-    return this.boardService.remove(boardId);
+  remove(@Param('boardId') boardId: number, @userInfo() user: User) {
+    return this.boardService.remove(boardId, user);
   }
 }
