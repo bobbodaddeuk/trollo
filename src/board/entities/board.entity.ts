@@ -1,5 +1,6 @@
 import { Comment } from 'src/comment/entities/comment.entity';
 import { List } from 'src/list/entities/list.entity';
+// import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
