@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
-import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { SignInDto } from './dtos/sign-in.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('인증')
 @Controller('auth')
@@ -40,4 +40,12 @@ export class AuthController {
       data,
     };
   }
+  // @UseGuards(AuthGuard('jwt'))
+  // @Post('/logout')
+  // logout(@Request() req: any, @Res() res: any) {
+  //   return res.status(HttpStatus.OK).json({
+  //     statusCode: HttpStatus.OK,
+  //     message: '로그아웃 되었습니다.',
+  //   });
+  // }
 }
