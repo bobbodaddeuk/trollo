@@ -28,8 +28,9 @@ export class UserService {
 
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
     const uuser = await this.userRepository.findOneBy({ id });
+
     if (!uuser) {
-      throw new Error('Authentication information is missing');
+      throw new NotFoundException('Authentication information is missing');
     }
 
     const { name, role } = updateUserDto;

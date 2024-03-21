@@ -22,6 +22,7 @@ import {
 @Entity({
   name: 'user',
 })
+// { unsigned: true }
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -60,18 +61,18 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Board, (board) => board.user)
+  @OneToMany(() => Board, (board) => board.user, { onDelete: 'CASCADE' })
   Board: Board[];
 
-  @OneToMany(() => List, (List) => List.user)
+  @OneToMany(() => List, (List) => List.user, { onDelete: 'CASCADE' })
   list: List[];
 
-  @OneToMany(() => Card, (card) => card.user)
+  @OneToMany(() => Card, (card) => card.user, { onDelete: 'CASCADE' })
   card: Card[];
 
-  @OneToMany(() => Comment, (comment) => comment.user)
+  @OneToMany(() => Comment, (comment) => comment.user, { onDelete: 'CASCADE' })
   comment: Comment[];
 
-  @OneToMany(() => Member, (member) => member.user)
+  @OneToMany(() => Member, (member) => member.user, { onDelete: 'CASCADE' })
   member: Member[];
 }

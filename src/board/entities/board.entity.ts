@@ -1,5 +1,6 @@
 import { Comment } from 'src/comment/entities/comment.entity';
 import { List } from 'src/list/entities/list.entity';
+// import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -17,6 +18,12 @@ import {
 export class Board {
   @PrimaryGeneratedColumn()
   boardId: number;
+
+  @Column({ type: 'int', nullable: false })
+  userId: number;
+
+  @Column({ type: 'int', nullable: false })
+  memberId: number;
 
   @Column({ type: 'varchar', nullable: false })
   boardName: string;

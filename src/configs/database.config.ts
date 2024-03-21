@@ -23,4 +23,3 @@ export const typeOrmModuleOptions = {
   }),
   inject: [ConfigService],
 };
-// 일단 entity가 없음!!

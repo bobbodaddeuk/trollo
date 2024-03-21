@@ -25,7 +25,6 @@ export class AuthService {
     }
 
     const existedUser = await this.userRepository.findOneBy({ email });
-    console.log(existedUser);
     if (existedUser) {
       throw new BadRequestException('이미 가입 된 이메일 입니다.');
     }
