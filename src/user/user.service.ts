@@ -22,12 +22,10 @@ export class UserService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
-    console.log('===========');
-    console.log(id);
-    console.log('===========');
     const uuser = await this.userRepository.findOneBy({ id });
+
     if (!uuser) {
-      throw new Error('Authentication information is missing');
+      throw new NotFoundException('Authentication information is missing');
     }
 
     const { name } = updateUserDto;

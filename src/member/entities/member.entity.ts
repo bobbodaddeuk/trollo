@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Grade } from '../type/grade.type';
+import { MemberGrade } from '../type/grade.type';
 import { Board } from 'src/board/entities/board.entity';
 import { User } from 'src/user/entities/user.entity';
 @Entity({ name: 'member' })
@@ -15,19 +15,24 @@ export class Member {
   @PrimaryGeneratedColumn()
   memberId: number;
 
+  @Column()
+  userId: number;
+
+  @Column()
+  boardId: number;
+
   @Column({
     type: 'enum',
-    enum: Grade,
-    nullable: false,
-    default: Grade.ReadOnly,
+    enum: MemberGrade,
+    default: MemberGrade.INVITED,
   })
-  grade: Grade;
+  grade: MemberGrade;
 
   @ManyToOne(() => Board, (Board) => Board.member)
   @JoinColumn({ name: 'boardId' })
   board: Board;
 
   @ManyToOne(() => User, (User) => User.member)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'id' })
   user: User;
 }

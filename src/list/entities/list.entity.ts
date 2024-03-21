@@ -23,15 +23,15 @@ export class List {
   @Column({ type: 'int' })
   index: number;
 
-  @OneToMany(() => Card, (card) => card.list)
+  @OneToMany(() => Card, (card) => card.list, { onDelete: 'CASCADE' })
   card: Card[];
 
-  @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Board, (board) => board.list)
   board: Board;
 
-  @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.list)
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.list)
+  @OneToMany(() => Comment, (comment) => comment.list, { onDelete: 'CASCADE' })
   comment: Comment[];
 }
