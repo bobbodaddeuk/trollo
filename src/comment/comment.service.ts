@@ -24,15 +24,11 @@ export class CommentService {
   ) {}
   // 댓글 달기
   async createComment(
-    userId: number,
     boardId: number,
     listId: number,
     cardId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<Comment> {
-    const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) throw new NotFoundException('해당하는 유저를 찾을 수 없습니다.');
-
     const board = await this.boardRepository.findOneBy({ boardId });
     if (!board)
       throw new NotFoundException('해당하는 게시판을 찾을 수 없습니다.');
@@ -45,6 +41,9 @@ export class CommentService {
     if (!card) throw new NotFoundException('해당하는 카드를 찾을 수 없습니다.');
     const comment = this.commentRepository.create({
       content: createCommentDto.content,
+      board,
+      list,
+      card,
     });
     await this.commentRepository.save(comment);
     return comment;
@@ -68,6 +67,9 @@ export class CommentService {
         card: { cardId },
       },
     });
+    if (comments.length === 0) {
+      return { message: '댓글이 존재하지 않습니다.' };
+    }
     return comments;
   }
 
@@ -79,9 +81,24 @@ export class CommentService {
     commentId: number,
     updateCommentDto: UpdateCommentDto,
   ): Promise<Comment> {
+    const board = await this.boardRepository.findOneBy({ boardId });
+    if (!board)
+      throw new NotFoundException('해당하는 게시판을 찾을 수 없습니다.');
+
+    const list = await this.listRepository.findOneBy({ listId });
+    if (!list)
+      throw new NotFoundException('해당하는 리스트를 찾을 수 없습니다.');
+
+    const card = await this.cardRepository.findOneBy({ cardId });
+    if (!card) throw new NotFoundException('해당하는 카드를 찾을 수 없습니다.');
     const { content } = updateCommentDto;
     const comment = await this.commentRepository.findOne({
-      where: { boardId, listId, cardId, commentId },
+      where: {
+        commentId: commentId,
+        board: { boardId },
+        list: { listId },
+        card: { cardId },
+      },
     });
     if (!comment) {
       throw new NotFoundException('해당하는 댓글을 찾을 수 없습니다.');
@@ -98,7 +115,8 @@ export class CommentService {
     boardId: number,
     listId: number,
     cardId: number,
-  ): Promise<void> {
+    commentId: number,
+  ): Promise<{ message: string }> {
     const board = await this.boardRepository.findOneBy({ boardId });
     if (!board)
       throw new NotFoundException('해당하는 게시판을 찾을 수 없습니다.');
@@ -110,12 +128,12 @@ export class CommentService {
     const card = await this.cardRepository.findOneBy({ cardId });
     if (!card) throw new NotFoundException('해당하는 카드를 찾을 수 없습니다.');
     const result = await this.commentRepository.delete({
-      boardId,
-      listId,
-      cardId,
+      commentId,
     });
     if (result.affected === 0) {
       throw new NotFoundException('해당하는 댓글을 찾을 수 없습니다.');
     }
+
+    return { message: '댓글이 성공적으로 삭제되었습니다.' };
   }
 }

@@ -19,18 +19,6 @@ export class Comment {
   @PrimaryGeneratedColumn()
   commentId: number;
 
-  @Column()
-  cardId: number;
-
-  @Column()
-  userId: number;
-
-  @Column()
-  listId: number;
-
-  @Column()
-  boardId: number;
-
   @Column({ type: 'varchar', select: true, nullable: false })
   content: string;
 

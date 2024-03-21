@@ -11,8 +11,6 @@ import {
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { User } from 'src/user/entities/user.entity';
-import { userInfo } from 'src/utils/userInfo.decorator';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('/comments')
@@ -25,11 +23,9 @@ export class CommentController {
     @Param()
     params: { boardId: number; listId: number; cardId: number },
     @Body() createCommentDto: CreateCommentDto,
-    @userInfo() user: User,
   ) {
     const { boardId, listId, cardId } = params;
     const comment = await this.commentService.createComment(
-      user.id,
       boardId,
       listId,
       cardId,
@@ -81,7 +77,7 @@ export class CommentController {
   }
 
   // 댓글 삭제
-  @Delete('/:boardId/:listId/:cardId')
+  @Delete('/:boardId/:listId/:cardId/:commentId')
   @UseGuards(JwtAuthGuard)
   async deleteComment(
     @Param()
@@ -89,9 +85,15 @@ export class CommentController {
       boardId: number;
       listId: number;
       cardId: number;
+      commentId: number;
     },
-  ): Promise<void> {
-    const { boardId, listId, cardId } = params;
-    return this.commentService.deleteComment(boardId, listId, cardId);
+  ): Promise<{ message: string }> {
+    const { boardId, listId, cardId, commentId } = params;
+    return this.commentService.deleteComment(
+      boardId,
+      listId,
+      cardId,
+      commentId,
+    );
   }
 }
