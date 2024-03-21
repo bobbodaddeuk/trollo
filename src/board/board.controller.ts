@@ -12,8 +12,6 @@ import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { GradesGuard } from './guards/grades.guard';
-import { Grades } from './decorators/grade.decorator';
-import { MemberGrade } from 'src/member/type/grade.type';
 import { userInfo } from 'src/utils/userInfo.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -29,7 +27,6 @@ export class BoardController {
     return this.boardService.create(createBoardDto, user);
   }
   // 내가 생성한 board 조회
-  @Grades(MemberGrade.OWNER)
   @Get('my-board')
   async findAll(@userInfo() user: User) {
     return await this.boardService.findAll(user);
@@ -45,7 +42,6 @@ export class BoardController {
     return this.boardService.findOne(boardId, user);
   }
   // board 수정
-  @Grades(MemberGrade.OWNER)
   @Patch(':boardId')
   update(
     @Param('boardId') boardId: number,
@@ -55,7 +51,6 @@ export class BoardController {
     return this.boardService.update(boardId, updateBoardDto, user);
   }
   // board 삭제
-  @Grades(MemberGrade.OWNER)
   @Delete(':boardId')
   remove(@Param('boardId') boardId: number, @userInfo() user: User) {
     return this.boardService.remove(boardId, user);

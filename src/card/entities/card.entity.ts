@@ -35,10 +35,10 @@ export class Card {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Comment, (comment) => comment.card)
+  @OneToMany(() => Comment, (comment) => comment.card, { onDelete: 'CASCADE' })
   comment: Comment[];
 
-  @ManyToOne(() => List, (list) => list.card, { onDelete: 'CASCADE' })
+  @ManyToOne(() => List, (list) => list.card)
   list: List;
 
   @ManyToOne(() => User, (user) => user.card, { onDelete: 'CASCADE' })
