@@ -16,25 +16,26 @@ import { Grades } from './decorators/grade.decorator';
 import { MemberGrade } from 'src/member/type/grade.type';
 import { userInfo } from 'src/utils/userInfo.decorator';
 import { User } from 'src/user/entities/user.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @UseGuards(GradesGuard)
-@Controller('boards') // userId 필요
+@Controller('boards')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
   // board 생성
   @Post()
-  createBoard(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardService.create(createBoardDto);
+  createBoard(@Body() createBoardDto: CreateBoardDto, @userInfo() user: User) {
+    return this.boardService.create(createBoardDto, user);
   }
   // 내가 생성한 board 조회
-  @Get()
+  @Grades(MemberGrade.OWNER)
+  @Get('my-board')
   async findAll(@userInfo() user: User) {
     return await this.boardService.findAll(user);
   }
   // 내가 참여하는 board 조회
-  @Get()
+  @Get('my-project')
   async findAllMyTeamProject(@userInfo() user: User) {
     return await this.boardService.findAllMyTeamProject(user);
   }
