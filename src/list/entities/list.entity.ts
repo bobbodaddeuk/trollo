@@ -1,4 +1,5 @@
 // import { Board } from 'src/board/entities/board.entity';
+import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -38,8 +39,8 @@ export class List {
   @OneToMany(() => Card, (card) => card.list)
   card: Card[];
 
-  // @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
-  // board: Board;
+  @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
+  board: Board;
 
   @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id' })

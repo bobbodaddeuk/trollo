@@ -80,4 +80,28 @@ export class ListService {
       };
     }
   }
+
+  // 컬럼 위치 이동
+  // 이동 시킬 컬럼 1개 찾아야함
+  // async changeListPosition(
+  //   updatedListDto: UpdatedListDto,
+  //   listId: number,
+  //   index: number,
+  //   user: User,
+  // ) {
+  //   // 움직이고 싶은 리스트
+  //   const selectedlist = await this.ListRepository.findOneBy({ listId });
+  //   if (!selectedlist) {
+  //     throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
+  //   }
+
+  //
+
+  // const indexList = await this.ListRepository.findOne({
+  //   where: { index },
+  // });
+  // if (!indexList) {
+  //   throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
+  // }
+  // }
 }

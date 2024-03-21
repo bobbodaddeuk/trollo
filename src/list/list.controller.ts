@@ -25,9 +25,13 @@ export class ListController {
 
   // 컬럼 생성하기.
   @UseGuards(JwtAuthGuard)
-  @Post() // url 추가적으로 작성해줘야함(기능은 잘 돌아감)
+  @Post('/:boardId/column') // url 추가적으로 작성해줘야함(기능은 잘 돌아감)
   // 클라이언트가 body에 담아서 보내야 하는 것
-  create(@Body() createListDto: CreateListDto, @userInfo() user: User) {
+  create(
+    @Body() createListDto: CreateListDto,
+    // index: number,
+    @userInfo() user: User,
+  ) {
     this.listService.createList(createListDto, user);
     return {
       status: HttpStatus.CREATED,
@@ -38,7 +42,7 @@ export class ListController {
 
   // 컬럼 제목 변경
   @UseGuards(JwtAuthGuard)
-  @Patch('/:listId')
+  @Patch('/:boardId/column/:listId')
   changeListTile(
     @Body() updatedListDto: UpdatedListDto,
     @Param('listId') listId: number,
@@ -49,8 +53,25 @@ export class ListController {
 
   // 컬럼 삭제 하기
   @UseGuards(JwtAuthGuard)
-  @Delete('/:listId')
+  @Delete('/:boardId/column/:listId')
   deleteList(@Param('listId') listId: number, @userInfo() user: User) {
     return this.listService.deleteList(listId, user);
   }
+
+  // 컬럼 위치 이동
+  // @UseGuards(JwtAuthGuard)
+  // @Patch('/:boardId/column/:listId/index/:index')
+  // changeListPositon(
+  //   @Body() updatedListDto: UpdatedListDto,
+  //   @Param('listId') listId: number,
+  //   @Param('index') index: number,
+  //   @userInfo() user: User,
+  // ) {
+  //   return this.listService.changeListPosition(
+  //     updatedListDto,
+  //     listId,
+  //     index,
+  //     user,
+  //   );
+  // }
 }
