@@ -71,7 +71,15 @@ export class BoardService {
     const { id } = user;
     console.log('id', id);
     const findBoard = await this.boardRepository.findOne({
-      where: { boardId, userId: id },
+      where: { boardId },
+      relations: [
+        'list.listId',
+        'list.title',
+        'card.cardId',
+        'card.title',
+        'card.content',
+        'card.deadline',
+      ],
     });
 
     if (!findBoard) {
