@@ -23,6 +23,9 @@ export class Comment {
   cardId: number;
 
   @Column()
+  userId: number;
+
+  @Column()
   listId: number;
 
   @Column()
