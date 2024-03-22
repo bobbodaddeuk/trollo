@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { List } from 'src/list/entities/list.entity';
 // import { List } from 'src/list/entities/list.entity';
@@ -20,19 +19,15 @@ export class Board {
   @PrimaryGeneratedColumn()
   boardId: number;
 
-  @ApiProperty({ example: 1 })
   @Column({ type: 'int', nullable: false })
   userId: number;
 
-  @ApiProperty({ example: 2 })
   @Column({ type: 'int', nullable: false })
   memberId: number;
 
-  @ApiProperty({ example: '보드 네임' })
   @Column({ type: 'varchar', nullable: false })
   boardName: string;
 
-  @ApiProperty({ example: '보드에 대한 설명 예시' })
   @Column({ type: 'text', nullable: true })
   description: string;
 
