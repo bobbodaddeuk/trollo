@@ -10,7 +10,7 @@ import {
 import { MemberGrade } from '../type/grade.type';
 import { Board } from 'src/board/entities/board.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Worker } from 'src/card/entities/worker.entity';
+import { Worker } from 'src/worker/entities/worker.entity';
 
 @Entity({ name: 'member' })
 @Index('memberId', ['memberId'], { unique: true })
