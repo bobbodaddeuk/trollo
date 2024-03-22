@@ -13,6 +13,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { userInfo } from 'src/utils/userInfo.decorator';
 import { User } from './entities/user.entity';
+import { DeleteUserDto } from './dtos/delete-user.dto';
 
 @ApiTags('사용자')
 @Controller('users')
@@ -21,7 +22,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('/me')
+  @Get('me')
   async findMe(@userInfo() user: User) {
     const data = await this.userService.findOneById(user);
 
@@ -33,7 +34,7 @@ export class UserController {
   }
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Patch('/me')
+  @Patch('me')
   async updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @userInfo() user: User,
@@ -51,11 +52,12 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('/me')
-  async deleteUser(@Request() req, @Body() body) {
-    const userId = req.user.id;
-    const { password } = body;
-    await this.userService.deleteUser(userId, password);
+  @Delete('me')
+  async deleteUser(
+    @userInfo() user: User,
+    @Body() deleteUserDto: DeleteUserDto,
+  ) {
+    await this.userService.deleteUser(user, deleteUserDto);
     return {
       statusCode: HttpStatus.OK,
       message: '회원 탈퇴에 성공했습니다.',
