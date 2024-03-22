@@ -29,10 +29,11 @@ export class ListController {
   // 클라이언트가 body에 담아서 보내야 하는 것
   create(
     @Body() createListDto: CreateListDto,
+    @Param('boardId') boardId: number,
     // index: number,
     @userInfo() user: User,
   ) {
-    this.listService.createList(createListDto, user);
+    this.listService.createList(createListDto, user, boardId);
     return {
       status: HttpStatus.CREATED,
       message: `새로운 컬럼이 생성되었습니다.`,
@@ -59,19 +60,13 @@ export class ListController {
   }
 
   // 컬럼 위치 이동
-  // @UseGuards(JwtAuthGuard)
-  // @Patch('/:boardId/column/:listId/index/:index')
-  // changeListPositon(
-  //   @Body() updatedListDto: UpdatedListDto,
-  //   @Param('listId') listId: number,
-  //   @Param('index') index: number,
-  //   @userInfo() user: User,
-  // ) {
-  //   return this.listService.changeListPosition(
-  //     updatedListDto,
-  //     listId,
-  //     index,
-  //     user,
-  //   );
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Patch('/:boardId/column/:listId/index/:index')
+  changeListPositon(
+    @Param('listId') listId: number,
+    @Param('index') hopeindex: number,
+    // @userInfo() user: User,
+  ) {
+    return this.listService.changeListPosition(listId, hopeindex);
+  }
 }
