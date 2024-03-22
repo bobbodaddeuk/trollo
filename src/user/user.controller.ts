@@ -22,7 +22,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('/me')
+  @Get('me')
   async findMe(@userInfo() user: User) {
     const data = await this.userService.findOneById(user);
 
@@ -34,7 +34,7 @@ export class UserController {
   }
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Patch('/me')
+  @Patch('me')
   async updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @userInfo() user: User,
