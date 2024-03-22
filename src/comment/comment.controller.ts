@@ -12,12 +12,15 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Comment')
 @Controller('/comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
   //댓글 달기
   @Post('/:boardId/:listId/:cardId')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async createComment(
     @Param()
@@ -35,8 +38,9 @@ export class CommentController {
   }
   // 댓글 조회
   @Get('/:boardId/:listId/:cardId')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async findAllComment(
+  findAllComment(
     @Param()
     params: {
       boardId: number;
@@ -45,7 +49,7 @@ export class CommentController {
     },
   ) {
     const { boardId, listId, cardId } = params;
-    const comments = await this.commentService.findAllComment(
+    const comments = this.commentService.findAllComment(
       boardId,
       listId,
       cardId,
@@ -55,6 +59,7 @@ export class CommentController {
 
   // 댓글 수정
   @Put('/:boardId/:listId/:cardId/:commentId')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   updateComment(
     @Body() updateCommentDto: UpdateCommentDto,
@@ -78,8 +83,9 @@ export class CommentController {
 
   // 댓글 삭제
   @Delete('/:boardId/:listId/:cardId/:commentId')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async deleteComment(
+  deleteComment(
     @Param()
     params: {
       boardId: number;
