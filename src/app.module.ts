@@ -13,6 +13,8 @@ import { typeOrmModuleOptions } from './configs/database.config';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { WorkerModule } from './worker/worker.module';
+import { MemberModule } from './member/member.module';
 
 @Module({
   imports: [
@@ -27,9 +29,11 @@ import { UserModule } from './user/user.module';
     BoardModule,
     ListModule,
     CommentModule,
-    // MemberModule,
+    //두 개 사용하려고 추가
+    WorkerModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

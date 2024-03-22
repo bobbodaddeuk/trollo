@@ -1,5 +1,4 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString, isEnum } from "class-validator";
-import { CardWorker } from "../types/card.type";
+import { IsDateString, IsNotEmpty, IsString } from "class-validator";
 
 export class UpdateCardDto {
     @IsString()
