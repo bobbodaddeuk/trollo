@@ -24,6 +24,9 @@ export class List {
   @Column({ type: 'int', nullable: false })
   userId: number;
 
+  @Column({ type: 'int', nullable: false })
+  boardId: number;
+
   @Column({ type: 'varchar', select: true, nullable: false })
   title: string;
 
