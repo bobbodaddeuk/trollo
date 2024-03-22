@@ -15,12 +15,20 @@ import { userInfo } from 'src/utils/userInfo.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BoardMemberGuard } from './guards/board-member.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Board')
 @UseGuards(JwtAuthGuard)
 @Controller('boards')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
   // board 생성
+  /*
+   * board 생성
+   * @param createBoardDto
+   * @param user
+   * @returns
+   */
   @Post()
   async createBoard(
     @Body() createBoardDto: CreateBoardDto,

@@ -120,33 +120,4 @@ export class BoardService {
     }
     return findBoard;
   }
-  //------------------------------
-
-  async swapCardIndex(cardId1, cardId2) {
-    // 카드 1과 카드 2의 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const board = await queryRunner.manager.getRepository(Card).save({
-        cardId1,
-        index: ,
-        userId: id,
-      });
-
-      const { boardId } = board;
-
-      await queryRunner.manager
-        .getRepository(Member)
-        .save({ userId: id, boardId: boardId, grade: MemberGrade.OWNER });
-
-      await queryRunner.commitTransaction();
-      return board;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-  }
 }

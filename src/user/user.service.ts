@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { DeleteUserDto } from './dtos/delete-user.dto';
 
 @Injectable()
 export class UserService {
@@ -37,7 +38,9 @@ export class UserService {
     return await this.userRepository.save({ id, name, role });
   }
 
-  async deleteUser(id: number, password: string) {
+  async deleteUser(user: User, deleteUserDto: DeleteUserDto) {
+    const { id } = user;
+    const { password } = deleteUserDto;
     const uuser = await this.userRepository.findOne({
       select: ['password'],
       where: { id },
