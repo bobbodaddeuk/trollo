@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserRole } from '../types/user-role.type';
 import { Board } from 'src/board/entities/board.entity';
-import { Card } from 'src/card/entities/card.entity';
+// import { Card } from 'src/card/entities/card.entity';
 import { List } from 'src/list/entities/list.entity';
 import { Member } from 'src/member/entities/member.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
@@ -20,7 +20,7 @@ import {
 } from 'class-validator';
 
 @Entity({
-  name: 'user',
+  name: 'users',
 })
 // { unsigned: true }
 export class User {
@@ -67,8 +67,8 @@ export class User {
   @OneToMany(() => List, (List) => List.user, { onDelete: 'CASCADE' })
   list: List[];
 
-  @OneToMany(() => Card, (card) => card.user, { onDelete: 'CASCADE' })
-  card: Card[];
+  // @OneToMany(() => Card, (card) => card.user, { onDelete: 'CASCADE' })
+  // card: Card[];
 
   @OneToMany(() => Comment, (comment) => comment.user, { onDelete: 'CASCADE' })
   comment: Comment[];

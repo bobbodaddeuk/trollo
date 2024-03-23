@@ -4,7 +4,7 @@ import { MemberGrade } from '../type/grade.type';
 export class CreateMemberDto {
   @IsNumber()
   @IsNotEmpty()
-  id: number;
+  userId: number;
 
   @IsEnum(MemberGrade)
   grade: MemberGrade;

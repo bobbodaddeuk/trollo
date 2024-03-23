@@ -76,9 +76,8 @@ export class BoardController {
     description: '특정 보드를 상세 조회합니다.',
     type: Board,
   })
-  async findBoard(@Param('boardId') boardId: number, @userInfo() user: User) {
-    console.log('user.id', user.id);
-    return await this.boardService.findBoard(boardId, user);
+  async findBoard(@Param('boardId') boardId: number) {
+    return await this.boardService.findBoard(boardId);
   }
   // board 수정
   @UseGuards(BoardMemberGuard)
