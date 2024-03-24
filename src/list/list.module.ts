@@ -6,9 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Card } from 'src/card/entities/card.entity';
 import { Board } from 'src/board/entities/board.entity';
+import { PassportModule } from '@nestjs/passport';
+import { Member } from 'src/member/entities/member.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([List, User, Card, Board])],
+  imports: [
+    TypeOrmModule.forFeature([List, User, Card, Board, Member]),
+    PassportModule,
+  ],
   controllers: [ListController],
   providers: [ListService],
   exports: [TypeOrmModule],

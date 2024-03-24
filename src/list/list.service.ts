@@ -47,36 +47,34 @@ export class ListService {
   async changeListTitle(
     updateListDto: UpdatedListDto,
     listId: number,
-    user: User,
+    boardId: number,
   ) {
     // 찾고 싶은 게시물을 listId를 통해서 찾아준다.
+    // const list = await this.ListRepository.findOne({
+    //   where: { listId },
+    // });
+    const { title } = updateListDto;
+    console.log('boardId', boardId);
+    console.log(listId);
+    console.log(title);
 
-    const { id } = user;
-    const list = await this.ListRepository.findOne({
-      where: { listId, userId: id },
+    const changedListTitle = await this.ListRepository.save({
+      boardId,
+      listId,
+      title,
     });
-    if (!list) {
+    if (!changedListTitle) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
     // 레포지토리에 업데이트를 해줘야함
     await this.ListRepository.update({ listId }, updateListDto);
 
-    // list의 타이틀을 변경된 것을 DB에 넣어야함
-    const changedListTitle = await this.ListRepository.findOne({
-      where: {
-        listId,
-        userId: id,
-      },
-    });
-
-    if (changedListTitle) {
-      return {
-        status: HttpStatus.OK,
-        message: `${changedListTitle.listId}번 컬럼 제목이 정상적으로 변경되었습니다.`,
-        result: changedListTitle,
-      };
-    }
     // return changedListTitle;
+    return {
+      status: HttpStatus.OK,
+      message: `${changedListTitle.listId}번 컬럼 제목이 정상적으로 변경되었습니다.`,
+      result: changedListTitle,
+    };
   }
 
   // 컬럼 삭제하기
