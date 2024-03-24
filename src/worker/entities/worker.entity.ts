@@ -14,7 +14,7 @@ import { Member } from 'src/member/entities/member.entity';
     name: 'workers',
 })
 export class Worker {
-    @PrimaryGeneratedColumn({ unsigned: true })
+    @PrimaryGeneratedColumn()
     workerId: number;
 
     @Column({ type: 'int', nullable: false })
@@ -27,10 +27,31 @@ export class Worker {
     workerRole: CardWorker;
 
     @ManyToOne(() => Member, (member) => member.workers, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'memberId', referencedColumnName: "memberId" })
     member: Member;
 
-    @ManyToOne(() => Card, (card) => card.workers, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'cardId' })
+    @ManyToOne(() => Card, (card) => card.worker, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'cardId', referencedColumnName: "cardId" })
     card: Card;
-
 }
+
+// export class Worker {
+//     @PrimaryGeneratedColumn({ unsigned: true })
+//     workerId: number;
+
+//     @Column({ type: 'int', nullable: false })
+//     cardId: number;
+
+//     @Column({ type: 'int', nullable: false })
+//     memberId: number;
+
+//     @Column({ type: 'enum', enum: CardWorker, default: CardWorker.Member })
+//     workerRole: CardWorker;
+
+//     @ManyToOne(() => Member, (member) => member.workers, { onDelete: 'CASCADE' })
+//     member: Member;
+
+//     @ManyToOne(() => Card, (card) => card.workers, { onDelete: 'CASCADE' })
+//     //@JoinColumn({ name: 'cardId', referencedColumnName: "cardId" })
+//     card: Card;
+// }

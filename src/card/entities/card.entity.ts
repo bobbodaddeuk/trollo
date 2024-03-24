@@ -33,7 +33,7 @@ export class Card {
   @Column({ type: 'varchar', default: '미정' })
   content: string;
 
-  @Column({ type: 'date', default: '2024-12-31' })
+  @Column({ type: 'date', nullable: true })
   deadline: Date;
 
   //카드 순서(한 리스트 내에서 순서)
@@ -46,11 +46,11 @@ export class Card {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Comment, (comment) => comment.card, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.card)
   comment: Comment[];
 
-  @OneToMany(() => Worker, (workers) => workers.card, { cascade: true })
-  workers: Worker[];
+  @OneToMany(() => Worker, (worker) => worker.card)
+  worker: Worker[];
 
   @ManyToOne(() => List, (List) => List.card, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'listId' })

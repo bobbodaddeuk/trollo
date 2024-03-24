@@ -21,7 +21,7 @@ export class CardService {
     private readonly listRepository: Repository<List>,
     @InjectRepository(Member)
     private readonly memberRepository: Repository<Member>,
-  ) {}
+  ) { }
 
   //빈 카드 먼저 생성하기
   async create(boardId: number, listId: number, user: User) {
@@ -70,13 +70,16 @@ export class CardService {
 
   //카드 상세 조회
   async findCard(cardId: number) {
-    const card = await this.cardRepository.find({
+    const card = await this.cardRepository.findOne({
       where: { cardId },
-      relations: ['workers'],
+      relations: {
+        worker: true,
+        comment: true,
+      },
     });
 
     const worker = await this.workerRepository.find({ where: { cardId } });
-    console.log('============해당 카드에 존재하는 작업자들==================');
+    console.log("============해당 카드에 존재하는 작업자들==================");
     console.log(worker);
     console.log('=====================relations=========================');
     console.log(card);
@@ -132,7 +135,7 @@ export class CardService {
     }
 
     await this.cardRepository.delete({ cardId });
-    await this.workerRepository.delete({ cardId });
+    await this.workerRepository.delete({ card: { cardId } });
 
     return card;
   }
@@ -159,13 +162,11 @@ export class CardService {
     // 다른 리스트로 카드 이동할 때
     //(card.order : 옮기는 카드 순서 / cardOrder: 옮기려는 순서)
     if (card.listId === listOrder) {
-      await this.cardRepository.update({ cardId }, { order: cardOrder });
-
       //카드를 위로 옮길 때
       if (card.order > cardOrder) {
         console.log('============카드 위로 올리기=============');
         //옮긴 카드 순서(cardOrder)부터 하나씩 뒤로 밀기(카드 order값 +1)
-        for (let i = cardOrder; i < card.order; i++) {
+        for (let i = card.order - 1; i >= cardOrder; i--) {
           //해당 리스트의 i번째 카드 order 1씩 더해서 순서 뒤로 밀기
           const upCard = await this.cardRepository.findOne({
             where: { listId: listOrder, order: i },
@@ -175,11 +176,12 @@ export class CardService {
             { order: i + 1 },
           );
         }
+        await this.cardRepository.update({ cardId }, { order: cardOrder });
       } else {
         //카드를 아래로 옮길 때
         //옮긴 카드 순서(order)부터 하나씩 앞으로 밀기(카드 order값 -1)
         console.log('===============카드 아래로 옮기기================');
-        for (let j = cardOrder; j > card.order; j--) {
+        for (let j = card.order + 1; j <= cardOrder; j++) {
           //해당 리스트의 j번째 카드 order 1씩 줄여서 순서 앞으로 밀기
           const downCard = await this.cardRepository.findOne({
             where: { listId: listOrder, order: j },
@@ -189,12 +191,18 @@ export class CardService {
             { cardId: downCard.cardId },
             { order: j - 1 },
           );
+
+          const updCard = await this.cardRepository.findOne({ where: { cardId: downCard.cardId } });
+
+          console.log('카드순서 업데이트 후에 카드 order : ', updCard.order);
         }
+        await this.cardRepository.update({ cardId }, { order: cardOrder });
       }
 
       //다른 리스트의 cardOrder 순서에 카드 넣기
       //card : 옮기려는 카드 / cards : 옮기려는 리스트
     } else {
+      console.log('다른 리스트로 카드 옮기기');
       //기존 리스트에서 카드 뺀 자리만큼 뒤의 카드들 order 앞으로 가져오기
       const fList = await this.cardRepository.find({
         where: { listId: card.listId },
@@ -220,7 +228,8 @@ export class CardService {
         );
       } else {
         //다른 리스트 중간에 카드 넣기
-        for (let z = cardOrder; z <= cards.length; z++) {
+
+        for (let z = cards.length; z >= cardOrder; z--) {
           //해당 리스트의 z번째 카드 order 1씩 더해서 순서 뒤로 밀기
           const mCard = await this.cardRepository.findOne({
             where: { listId: listOrder, order: z },
@@ -236,5 +245,10 @@ export class CardService {
         );
       }
     }
+
+    return await this.cardRepository.find({
+      order: { order: 'ASC' },
+      where: { listId: listOrder }
+    });
   }
 }

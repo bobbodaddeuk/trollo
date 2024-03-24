@@ -25,7 +25,7 @@ import { Workers } from 'src/worker/decorators/workers.decorator';
 @UseGuards(WorkersGuard)
 @Controller('card')
 export class CardController {
-  constructor(private readonly cardService: CardService) {}
+  constructor(private readonly cardService: CardService) { }
 
   //카드 생성하기
   //카드 생성한 사람 leader 권한 부여 필요
@@ -115,7 +115,7 @@ export class CardController {
     @Param('cardId') cardId: string,
     @Body() moveCardDto: MoveCardDto,
   ) {
-    await this.cardService.moveCard(
+    const cards = await this.cardService.moveCard(
       +cardId,
       moveCardDto.listOrder,
       moveCardDto.cardOrder,
@@ -123,6 +123,7 @@ export class CardController {
     return {
       statusCode: HttpStatus.OK,
       message: '카드 이동에 성공했습니다.',
+      cards
     };
   }
 }
