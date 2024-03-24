@@ -6,10 +6,14 @@ import { User } from './entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { Board } from 'src/board/entities/board.entity';
+import { Member } from 'src/member/entities/member.entity';
+import { List } from 'src/list/entities/list.entity';
+import { Card } from 'src/card/entities/card.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Board, Member, List, Card]),
     AuthModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

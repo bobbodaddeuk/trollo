@@ -33,21 +33,20 @@ export class MemberService {
   }
   // 보드에 유저 초대
   async create(createMemberDto: CreateMemberDto, boardId: number, user: User) {
-    const { id, grade } = createMemberDto;
-    const userId = user.id;
-    console.log('멤버 초대:', id, grade);
+    const { userId, grade } = createMemberDto;
+    const { id } = user;
     const findBoardOwner = await this.boardRepository.findOne({
-      where: { boardId, userId },
+      where: { boardId, userId: id },
     });
 
     if (!findBoardOwner) {
       throw new NotFoundException('해당 보드를 찾을 수 없습니다.');
     }
 
-    await this.existedUser(id);
+    await this.existedUser(userId);
 
     const inviteInBoard = await this.memberRepository.save({
-      id,
+      userId,
       grade,
       boardId,
     });

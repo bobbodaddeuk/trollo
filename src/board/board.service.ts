@@ -18,7 +18,6 @@ export class BoardService {
   // 보드 생성
   async create(createBoardDto: CreateBoardDto, user: User) {
     const { boardName, description } = createBoardDto;
-    console.log(createBoardDto);
     const { id } = user;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -67,11 +66,13 @@ export class BoardService {
     return findAllMyProject;
   }
   // 보드 상세 조회
-  async findBoard(boardId: number, user: User) {
-    const { id } = user;
-    console.log('id', id);
+  async findBoard(boardId: number) {
     const findBoard = await this.boardRepository.findOne({
-      where: { boardId, userId: id },
+      where: { boardId },
+      relations: {
+        list: true,
+        card: true,
+      },
     });
 
     if (!findBoard) {
@@ -107,9 +108,13 @@ export class BoardService {
       where: { boardId, userId: id },
     });
 
+    await this.boardRepository.delete({
+      boardId,
+    });
+
     if (!findBoard) {
       throw new NotFoundException('해당 보드가 존재하지 않습니다.');
     }
-    return findBoard;
+    return { message: '해당 보드를 삭제하였습니다.' };
   }
 }

@@ -12,7 +12,7 @@ import { Board } from 'src/board/entities/board.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Worker } from 'src/worker/entities/worker.entity';
 
-@Entity({ name: 'member' })
+@Entity({ name: 'members' })
 @Index('memberId', ['memberId'], { unique: true })
 export class Member {
   @PrimaryGeneratedColumn()
@@ -31,16 +31,14 @@ export class Member {
   })
   grade: MemberGrade;
 
-  @ManyToOne(() => Board, (Board) => Board.member)
+  @ManyToOne(() => Board, (Board) => Board.member, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'boardId' })
   board: Board;
 
-  @ManyToOne(() => User, (User) => User.member)
-  @JoinColumn({ name: 'id' })
+  @ManyToOne(() => User, (User) => User.member, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
-  //추가
-  //작업자 (workers) 테이블
   @OneToMany(() => Worker, (workers) => workers.member, { cascade: true })
   workers: Worker[];
 }

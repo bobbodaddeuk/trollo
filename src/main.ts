@@ -21,8 +21,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Sparta Node.js TS')
-    .setDescription('Document for Sparta Node.js TS')
+    .setTitle('Project Trollo-401')
+    .setDescription('Document for Trollo-401')
     .setVersion('1.0')
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }) // JWT 사용을 위한 설정
     .build();
