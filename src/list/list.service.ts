@@ -58,16 +58,21 @@ export class ListService {
     console.log(listId);
     console.log(title);
 
-    const changedListTitle = await this.ListRepository.save({
-      boardId,
-      listId,
-      title,
-    });
+    // const changedListTitle = await this.ListRepository.finde({
+    //   boardId,
+    //   listId,
+    //   title,
+    // });
+
+    const changedListTitle = await this.ListRepository.findOne({ where: { listId } });
+
+    console.log('listId : ', listId);
+
     if (!changedListTitle) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
     // 레포지토리에 업데이트를 해줘야함
-    await this.ListRepository.update({ listId }, updateListDto);
+    await this.ListRepository.update({ listId }, { title });
 
     // return changedListTitle;
     return {
@@ -78,22 +83,38 @@ export class ListService {
   }
 
   // 컬럼 삭제하기
-  async deleteList(listId: number, user: User) {
+  async deleteList(boardId: number, listId: number, user: User) {
     const { id } = user;
     const list = await this.ListRepository.findOne({
       where: { listId, userId: id },
     });
+
     if (!list) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
-    const deleteList = await this.ListRepository.delete({ listId, userId: id });
-    if (deleteList) {
-      return {
-        status: HttpStatus.OK,
-        message: `${listId}번 컬럼이 정상적으로 삭제되었습니다.`,
-        result: deleteList,
-      };
+
+    //리스트 개수
+    const ilist = await this.ListRepository.find({ where: { boardId } });
+
+    const deleteList = await this.ListRepository.delete({ listId });
+
+    for (let i = list.index + 1; i <= ilist.length; i++) {
+      const a = await this.ListRepository.findOne({ where: { boardId, index: i } });
+      await this.ListRepository.update({ listId: a.listId }, { index: i - 1 });
     }
+
+    // const lists = await this.ListRepository.findBy({ boardId });
+
+    // console.log('lists: ', lists);
+    // for (let i = lists.List.index; i < lists.length; i++) {
+    //   await this.ListRepository.save({ index: list[i].index - 1 });
+    // }
+
+    return {
+      status: HttpStatus.OK,
+      message: `${listId}번 컬럼이 정상적으로 삭제되었습니다.`,
+      result: deleteList,
+    };
   }
 
   // 컬럼 위치 이동

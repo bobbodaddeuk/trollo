@@ -246,6 +246,9 @@ export class CardService {
       }
     }
 
-    return await this.cardRepository.find({ where: { listId: listOrder } });
+    return await this.cardRepository.find({
+      order: { order: 'ASC' },
+      where: { listId: listOrder }
+    });
   }
 }

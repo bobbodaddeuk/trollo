@@ -23,37 +23,37 @@ export class ListController {
   // 컬럼 생성하기.
   @Post()
   // 클라이언트가 body에 담아서 보내야 하는 것
-  create(
+  async create(
     @Body() createListDto: CreateListDto,
     @Param('boardId') boardId: number,
     @userInfo() user: User,
   ) {
-    return this.listService.createList(createListDto, user, boardId);
+    return await this.listService.createList(createListDto, user, boardId);
   }
 
   // 컬럼 제목 변경
   @Patch(':listId')
-  changeListTile(
+  async changeListTile(
     @Body() updatedListDto: UpdatedListDto,
     @Param('listId') listId: number,
     @Param('boardId') boardId: number,
   ) {
-    return this.listService.changeListTitle(updatedListDto, boardId, listId);
+    return await this.listService.changeListTitle(updatedListDto, listId, boardId);
   }
 
   // 컬럼 삭제 하기
   @Delete(':listId')
-  deleteList(@Param('listId') listId: number, @userInfo() user: User) {
-    return this.listService.deleteList(listId, user);
+  async deleteList(@Param('listId') listId: number, @Param('boardId') boardId: number, @userInfo() user: User) {
+    return await this.listService.deleteList(boardId, listId, user);
   }
 
   // 컬럼 위치 이동
-  @Patch(':listId/:index')
-  changeListPositon(
+  @Patch('index/:listId/:index')
+  async changeListPositon(
     @Param('listId') listId: number,
     @Param('index') hopeindex: number,
     // @userInfo() user: User,
   ) {
-    return this.listService.changeListPosition(listId, hopeindex);
+    return await this.listService.changeListPosition(listId, hopeindex);
   }
 }
