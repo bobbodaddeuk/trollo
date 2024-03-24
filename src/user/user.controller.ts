@@ -50,7 +50,6 @@ export class UserController {
     };
   }
 
-  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete('me')
   async deleteUser(

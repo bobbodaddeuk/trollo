@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,15 +10,15 @@ import {
 
 import { List } from 'src/list/entities/list.entity';
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
-import { User } from 'src/user/entities/user.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Worker } from 'src/worker/entities/worker.entity';
+import { Board } from 'src/board/entities/board.entity';
 
 @Entity({
   name: 'cards',
 })
 export class Card {
-  @PrimaryGeneratedColumn({ unsigned: true })
+  @PrimaryGeneratedColumn()
   cardId: number;
 
   @Column({ type: 'int', nullable: false })
@@ -26,16 +27,13 @@ export class Card {
   @Column({ type: 'int', nullable: false })
   boardId: number;
 
-  // @Column({ type: 'int', nullable: false })
-  // userId: number;
-
   @Column({ type: 'varchar', default: '미정' })
   title: string;
 
   @Column({ type: 'varchar', default: '미정' })
   content: string;
 
-  @Column({ type: 'date', default: '2024-12-31' })
+  @Column({ type: 'date', nullable: true })
   deadline: Date;
 
   //카드 순서(한 리스트 내에서 순서)
@@ -48,15 +46,17 @@ export class Card {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Comment, (comment) => comment.card, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.card)
   comment: Comment[];
 
-  @ManyToOne(() => List, (list) => list.card, { onDelete: 'CASCADE' })
+  @OneToMany(() => Worker, (worker) => worker.card)
+  worker: Worker[];
+
+  @ManyToOne(() => List, (List) => List.card, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'listId' })
   list: List;
 
-  @ManyToOne(() => User, (user) => user.card, { onDelete: 'CASCADE' })
-  user: User;
-
-  @OneToMany(() => Worker, (workers) => workers.card, { cascade: true })
-  workers: Worker[];
+  @ManyToOne(() => Board, (Board) => Board.card, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'boardId' })
+  board: Board;
 }

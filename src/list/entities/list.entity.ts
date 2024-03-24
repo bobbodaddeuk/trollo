@@ -1,4 +1,3 @@
-// import { Board } from 'src/board/entities/board.entity';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
@@ -15,7 +14,7 @@ import {
 } from 'typeorm';
 
 @Entity({
-  name: 'list',
+  name: 'lists',
 })
 export class List {
   @PrimaryGeneratedColumn()
@@ -39,16 +38,17 @@ export class List {
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt: Date;
 
-  @OneToMany(() => Card, (card) => card.list, { onDelete: 'CASCADE' })
-  card: Card[];
-
-  @ManyToOne(() => Board, (board) => board.list)
+  @ManyToOne(() => Board, (board) => board.list, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'boardId' })
   board: Board;
 
   @ManyToOne(() => User, (user) => user.list, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.list, { onDelete: 'CASCADE' })
+  @OneToMany(() => Card, (card) => card.list)
+  card: Card[];
+
+  @OneToMany(() => Comment, (comment) => comment.list)
   comment: Comment[];
 }

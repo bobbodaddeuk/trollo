@@ -15,14 +15,13 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from 'src/user/entities/user.entity';
 import { userInfo } from 'src/utils/userInfo.decorator';
-import { BoardMemberGuard } from 'src/board/guards/board-member.guard';
+//import { BoardMemberGuard } from 'src/board/guards/board-member.guard';
 import { GradesGuard } from './guards/grades.guard';
 import { Grades } from './decorators/grade.decorator';
 import { MemberGrade } from './type/grade.type';
 import { Response } from 'express';
 
 @UseGuards(JwtAuthGuard)
-@UseGuards(BoardMemberGuard)
 @UseGuards(GradesGuard)
 @Controller('member')
 export class MemberController {

@@ -30,9 +30,12 @@ export class CardController {
   //카드 생성하기
   //카드 생성한 사람 leader 권한 부여 필요
   @Post(':boardId/:listId')
-  async create(@Param('boardId') boardId: number, @Param('listId') listId: number, @userInfo() user: User) {
-
-    const card = await this.cardService.create(boardId, listId, user.id);
+  async create(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+    @userInfo() user: User,
+  ) {
+    const card = await this.cardService.create(boardId, listId, user);
 
     return {
       statusCode: HttpStatus.OK,
@@ -43,7 +46,10 @@ export class CardController {
 
   //카드 목록 조회(o)
   @Get(':boardId/:listId')
-  async findCards(@Param('boardId') boardId: number, @Param('listId') listId: number) {
+  async findCards(
+    @Param('boardId') boardId: number,
+    @Param('listId') listId: number,
+  ) {
     const cards = await this.cardService.findCards(boardId, listId);
 
     return {
@@ -69,7 +75,10 @@ export class CardController {
   //카드 생성했던 leader만 가능
   @Workers(CardWorker.Leader)
   @Patch(':cardId')
-  async update(@Param('cardId') cardId: string, @Body() updateCardDto: UpdateCardDto) {
+  async update(
+    @Param('cardId') cardId: string,
+    @Body() updateCardDto: UpdateCardDto,
+  ) {
     const card = await this.cardService.update(
       +cardId,
       updateCardDto.title,
@@ -102,11 +111,19 @@ export class CardController {
   //카드 생성했던 leader만 가능
   @Workers(CardWorker.Leader)
   @Patch(':cardId/move')
-  async moveCard(@Param('cardId') cardId: string, @Body() moveCardDto: MoveCardDto) {
-    await this.cardService.moveCard(+cardId, moveCardDto.listOrder, moveCardDto.cardOrder);
+  async moveCard(
+    @Param('cardId') cardId: string,
+    @Body() moveCardDto: MoveCardDto,
+  ) {
+    const cards = await this.cardService.moveCard(
+      +cardId,
+      moveCardDto.listOrder,
+      moveCardDto.cardOrder,
+    );
     return {
       statusCode: HttpStatus.OK,
       message: '카드 이동에 성공했습니다.',
+      cards
     };
   }
 }

@@ -22,14 +22,3 @@ export class CreateListDto {
   @IsOptional()
   updatedAt: Date;
 }
-
-// 쓰레기
-// export class FindListDto {
-//   @IsNumber()
-//   @IsNotEmpty({ message: 'boardId를 입력해주세요.' })
-//   boardId: number;
-
-//   @IsNumber()
-//   @IsNotEmpty({ message: 'columnId를 입력해주세요.' })
-//   columnId: number;
-// }
