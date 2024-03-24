@@ -31,13 +31,14 @@ export class BoardMemberGuard extends JwtAuthGuard implements CanActivate {
     const userId = req.user.id;
     const boardId = req.params.boardId; // Convert boardId to number
 
-    console.log('boardmemberguard: userId, boardId', userId, boardId);
+    console.log('board-member-guard: userId, boardId', userId, boardId);
 
-    const member = await this.memberRepository.findOneBy({
-      userId,
-      boardId,
+    const member = await this.memberRepository.findOne({
+      where: { userId, boardId },
     });
+
     console.log('member: ', member);
+
     if (!member) {
       throw new ForbiddenException('해당 보드의 멤버가 아닙니다.');
     }
