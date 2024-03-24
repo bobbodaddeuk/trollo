@@ -25,7 +25,7 @@ export class WorkerService {
             throw new NotFoundException('존재하지 않는 카드입니다.');
         }
 
-        const [w] = await this.workerRepository.find({ where: { cardId, memberId } });
+        const [w] = await this.workerRepository.find({ where: { card: { cardId }, member: { memberId } } });
 
         if (_.isUndefined(w)) {
             const worker = await this.workerRepository.save({ cardId, memberId, workerRole: CardWorker.Member });
@@ -48,12 +48,12 @@ export class WorkerService {
             throw new NotFoundException('존재하지 않는 카드입니다.');
         }
 
-        const worker = await this.workerRepository.findOne({ where: { cardId, memberId } })
+        const worker = await this.workerRepository.findOne({ where: { card: { cardId }, member: { memberId } } })
 
         if (!worker) {
             throw new BadRequestException('해당 카드에 삭제하려는 작업자가 존재하지 않습니다.');
         }
-        await this.workerRepository.delete({ cardId, memberId });
+        await this.workerRepository.delete({ card: { cardId }, member: { memberId } });
 
         return worker;
     }

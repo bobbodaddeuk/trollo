@@ -57,7 +57,7 @@ export class CardService {
       ]
     });
 
-    const worker = await this.workerRepository.find({ where: { cardId } });
+    const worker = await this.workerRepository.find({ where: { card: { cardId } } });
     console.log("============해당 카드에 존재하는 작업자들==================");
     console.log(worker);
     console.log("=====================relations=========================");
@@ -109,7 +109,7 @@ export class CardService {
     }
 
     await this.cardRepository.delete({ cardId });
-    await this.workerRepository.delete({ cardId });
+    await this.workerRepository.delete({ card: { cardId } });
 
     return card;
   }

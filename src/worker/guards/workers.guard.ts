@@ -38,7 +38,7 @@ export class WorkersGuard extends JwtAuthGuard implements CanActivate {
         const req = context.switchToHttp().getRequest();
         const userId = req.user.id;
         const user = await this.memberRepository.findOneBy({ userId: userId });
-        const member = await this.workerRepository.findOne({ where: { memberId: user.memberId } })
+        const member = await this.workerRepository.findOne({ where: { member: { memberId: user.memberId } } })
 
         const hasPermission = requiredWorkers.some((workerRole) => member.workerRole === workerRole);
 

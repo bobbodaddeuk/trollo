@@ -17,7 +17,7 @@ export const typeOrmModuleOptions = {
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_NAME'),
     entities: [User, Board, Member, List, Card],
-    synchronize: configService.get<boolean>('DB_SYNC'),
+    synchronize: true,
     autoLoadEntities: true,
     logging: true,
   }),
