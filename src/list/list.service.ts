@@ -63,9 +63,11 @@ export class ListService {
       listId,
       title,
     });
+
     if (!changedListTitle) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
+
     return {
       status: HttpStatus.OK,
       message: `${changedListTitle.listId}번 컬럼 제목이 정상적으로 변경되었습니다.`,
@@ -74,22 +76,34 @@ export class ListService {
   }
 
   // 컬럼 삭제하기
-  async deleteList(listId: number, user: User) {
+  async deleteList(listId: number, boardId: number, user: User) {
     const { id } = user;
     const list = await this.ListRepository.findOne({
       where: { listId, userId: id },
     });
+
     if (!list) {
       throw new NotFoundException(`해당하는 컬럼이 존재하지 않습니다.`);
     }
-    const deleteList = await this.ListRepository.delete({ listId, userId: id });
-    if (deleteList) {
-      return {
-        status: HttpStatus.OK,
-        message: `${listId}번 컬럼이 정상적으로 삭제되었습니다.`,
-        result: deleteList,
-      };
-    }
+
+    const deleteList = await this.ListRepository.delete({
+      boardId,
+      listId,
+      userId: id,
+    });
+
+    // const lists = await this.ListRepository.findBy({ boardId });
+
+    // console.log('lists: ', lists);
+    // for (let i = lists.List.index; i < lists.length; i++) {
+    //   await this.ListRepository.save({ index: list[i].index - 1 });
+    // }
+
+    return {
+      status: HttpStatus.OK,
+      message: `${listId}번 컬럼이 정상적으로 삭제되었습니다.`,
+      result: deleteList,
+    };
   }
 
   // 컬럼 위치 이동

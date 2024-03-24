@@ -43,12 +43,16 @@ export class ListController {
 
   // 컬럼 삭제 하기
   @Delete(':listId')
-  deleteList(@Param() listId: number, @userInfo() user: User) {
-    return this.listService.deleteList(listId, user);
+  deleteList(
+    @Param('listId') listId: number,
+    @Param('boardId') boardId: number,
+    @userInfo() user: User,
+  ) {
+    return this.listService.deleteList(listId, boardId, user);
   }
 
   // 컬럼 위치 이동
-  @Patch(':listId/:index')
+  @Patch('index/:listId/:index')
   changeListPositon(
     @Param('listId') listId: number,
     @Param('index') hopeindex: number,
